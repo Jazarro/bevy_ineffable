@@ -1,8 +1,8 @@
-[![Crates.io](https://img.shields.io/crates/v/ineffable)](https://crates.io/crates/ineffable)
-[![Downloads](https://img.shields.io/crates/d/ineffable)](https://crates.io/crates/ineffable)
-[![Docs](https://docs.rs/ineffable/badge.svg)](https://docs.rs/ineffable/latest/ineffable/)
+[![Crates.io](https://img.shields.io/crates/v/bevy_ineffable)](https://crates.io/crates/bevy_ineffable)
+[![Downloads](https://img.shields.io/crates/d/bevy_ineffable)](https://crates.io/crates/bevy_ineffable)
+[![Docs](https://docs.rs/bevy_ineffable/badge.svg)](https://docs.rs/bevy_ineffable/latest/bevy_ineffable/)
 [![unsafe forbidden](https://img.shields.io/badge/unsafe-forbidden-success.svg)](https://github.com/rust-secure-code/safety-dance/)
-[![License](https://img.shields.io/badge/license-MIT%2FApache-blue.svg)](https://github.com/jazarro/ineffable#license)
+[![License](https://img.shields.io/badge/license-MIT%2FApache-blue.svg)](https://github.com/jazarro/bevy_ineffable#license)
 
 # Bevy Ineffable
 
@@ -11,22 +11,21 @@ A simple-to-use input manager for the Bevy game engine that empowers players and
 ## Core tenets
 
 1. Make accessibility easy.
-    - _Players can create and share custom input configs. Configs can be merged at runtime._
-    - _[Post acceptance delay][1] helps players with conditions like Parkinson's avoid unintended key presses._
-    - _[Toggling continuous input][2] helps players who physically cannot hold down a button for long periods of time._
-    - _[Macro support][3] coming soon._
+    - Players can create and share custom input configs. Configs can be merged at runtime.
+    - [Post acceptance delay][1] helps players with conditions like Parkinson's avoid unintended key presses.
+    - [Toggling continuous input][2] helps players who physically cannot hold down a button for long periods of time.
+    - [Macro support][3] coming soon.
 2. Offer a unified, abstracted view of input.
-    - _Games should be agnostic of specific input devices._
-    - _No more manually gathering keyboard, mouse and gamepad input from multiple sources._
+    - Games should be agnostic of specific input devices.
+    - No more manually gathering keyboard, mouse and gamepad input from multiple sources.
 3. Never allow the game to crash, but provide clear and direct feedback when something goes wrong.
-    - _Scans player-made keybinding configurations and composes reports that provide detailed feedback about any
-      problems._
+    - Scans player-made keybinding configurations and composes a report containing detailed feedback.
 4. Recognise the existence of different kinds of input (axis, dual-axis, continuous and pulse), and leverage the type
    system to differentiate between them at compile time.
-    - DualAxis: _Inputs a direction along two axes. E.g. an analog stick._
-    - SingleAxis: _Inputs a direction along one axis. E.g. the mouse wheel._
-    - Continuous: _Is active continuously; for example, while a button is held down._
-    - Pulse: _Pulses occasionally; for example, when a button is pressed._
+    - DualAxis: Inputs a direction along two axes. E.g. an analog stick.
+    - SingleAxis: Inputs a direction along one axis. E.g. the mouse wheel.
+    - Continuous: Is active continuously; for example, while a button is held down.
+    - Pulse: Pulses occasionally; for example, when a button is pressed.
 
 ## Quickstart
 
@@ -52,12 +51,13 @@ fn main() {
         .run();
 }
 
-/// Define an enum with `InputAction`s: abstract actions that keys can be bound to.
+/// Define an enum and derive `InputAction`.
+/// These are the abstract actions that keys can be bound to.
 #[derive(InputAction)]
 pub enum GooseInput {
-    /// For this example, the only thing the player can do is honk.
-    /// We must define what kind of input each action is.
-    /// Honking is something that happens instantaneously, so we'll define it as a pulse.
+    /// In this example, the only thing the player can do is honk.
+    /// We must define what kind of input Honk is. Honking is 
+    /// enacted instantaneously, so we'll define it as a pulse.
     #[ineffable(pulse)]
     Honk,
 
@@ -66,8 +66,9 @@ pub enum GooseInput {
 }
 
 /// Create a config that binds the space bar to the `Honk` action.
-/// We use the builder pattern here, but you can also load configs as an asset.
 fn init(mut ineffable: IneffableCommands) {
+    // The builder pattern is used here, but configs can also 
+    // be loaded as an asset.
     let config = InputConfig::builder()
         .bind(
             ineff!(GooseInput::Honk),
@@ -77,8 +78,7 @@ fn init(mut ineffable: IneffableCommands) {
     ineffable.set_config(&config);
 }
 
-/// Whenever the Honk action pulses (when the space bar is just pressed down), 
-/// we write to the console.
+/// Whenever the Honk action pulses, write to the console.
 fn update(ineffable: Res<Ineffable>) {
     if ineffable.just_pulsed(ineff!(GooseInput::Honk)) {
         println!("Honk!");
@@ -124,8 +124,8 @@ cargo run --example basics
 
 Ineffable is dual-licensed under either:
 
-- `MIT` ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
-- `Apache 2.0` ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
+- [`MIT`](LICENSE-MIT): [http://opensource.org/licenses/MIT](http://opensource.org/licenses/MIT)
+- [`Apache 2.0`](LICENSE-APACHE): [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
 at your option. This means that when using this crate in your game, you may choose which license to use.
 

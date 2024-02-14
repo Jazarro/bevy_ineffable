@@ -24,7 +24,7 @@ pub mod register;
 pub mod reporting;
 pub mod resources;
 
-/// `use bevy_ineffable::prelude::*'` should be all you need to use this crate!
+/// The prelude should be all you need to use this crate!
 /// Of course, if you want, you can also selectively use only the parts you need.
 pub mod prelude {
     pub use bevy_ineffable_macros::ineff;
