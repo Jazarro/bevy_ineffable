@@ -1,0 +1,21 @@
+InputConfig(
+    bindings: {
+        "PlayerInput": {
+            "Movement": [
+                DualAxis(
+                    x: Hold([Key(A)], [Key(D)]),
+                    y: Hold([Key(S)], [Key(W)]),
+                ),
+            ],
+            "Rotate": [
+                Axis(Hold([Key(Left)], [Key(Right)])),
+            ],
+            "Blush": [
+                Continuous(Hold([Key(ShiftLeft)])),
+            ],
+            "Teleport": [
+                Pulse(JustPressed([Key(Space)])),
+            ],
+        },
+    },
+)

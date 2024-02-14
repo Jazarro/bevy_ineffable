@@ -1,0 +1,18 @@
+[package]
+name = "bevy_ineffable_macros"
+# This version number should be kept in sync with that of the bevy_ineffable crate.
+version = "0.1.0"
+authors = ["Jazarro"]
+edition = "2021"
+description = "Macros for the bevy_ineffable crate."
+homepage = "https://github.com/Jazarro/bevy_ineffable"
+repository = "https://github.com/Jazarro/bevy_ineffable"
+license = "MIT OR Apache-2.0"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+syn = "2.0.48"
+quote = "1.0.35"
+proc-macro2 = "1.0.78"

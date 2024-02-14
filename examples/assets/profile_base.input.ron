@@ -1,0 +1,12 @@
+InputConfig(
+    bindings: {
+        "Action": {
+            "Defend": [
+                Pulse(JustPressed([Key(Q)])),
+            ],
+            "Attack": [
+                Pulse(JustPressed([Key(W)])),
+            ],
+        },
+    },
+)

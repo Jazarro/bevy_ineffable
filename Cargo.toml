@@ -1,0 +1,36 @@
+[package]
+name = "bevy_ineffable"
+version = "0.1.0"
+authors = ["Jazarro"]
+edition = "2021"
+description = "A simple-to-use input manager for bevy that empowers players and makes accessibility easy."
+homepage = "https://github.com/Jazarro/bevy_ineffable"
+repository = "https://github.com/Jazarro/bevy_ineffable"
+license = "MIT OR Apache-2.0"
+keywords = ["bevy", "input", "gamedev", "keybindings", "accessibility"]
+categories = ["game-development", "config", "accessibility", ]
+exclude = [
+    ".idea/*",
+    "TODO.md",
+]
+
+[profile.dev]
+opt-level = 3
+
+[workspace]
+members = [".", "macros"]
+
+[dependencies]
+
+bevy_ineffable_macros = { version = "=0.1.0", path = "macros" }
+
+serde = { version = "1.0.196", features = ["derive"] }
+ron = "0.8.1"
+
+bevy = { version = "0.12.1", default-features = false, features = [
+    "bevy_asset",
+    "serialize",
+] }
+
+[dev-dependencies]
+bevy = { version = "0.12.1", default-features = true, features = [] }

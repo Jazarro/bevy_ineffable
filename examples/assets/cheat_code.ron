@@ -1,0 +1,18 @@
+InputConfig(
+    bindings: {
+        "CheatCodes": {
+            "Password": [
+                Pulse(Sequence(1000, [
+                    [Key(P)], [Key(A)], [Key(S)], [Key(S)], [Key(W)], [Key(O)], [Key(R)], [Key(D)],
+                ])),
+            ],
+            "KonamiCode": [
+                Pulse(Sequence(1000, [
+                    [Key(Up)], [Key(Up)], [Key(Down)], [Key(Down)],
+                    [Key(Left)], [Key(Right)], [Key(Left)], [Key(Right)],
+                    [Key(B)], [Key(A)],
+                ])),
+            ],
+        },
+    },
+)
