@@ -6,7 +6,7 @@
 
 # Bevy Ineffable
 
-A simple-to-use input manager for the Bevy game engine that empowers players and makes accessibility easy.
+A simple-to-use input manager for the [Bevy game engine](https://github.com/bevyengine/bevy) that empowers players and makes accessibility easy.
 
 ## Core tenets
 
