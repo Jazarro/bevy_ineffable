@@ -638,7 +638,7 @@ dependencies = [
 
 [[package]]
 name = "bevy_ineffable"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "bevy",
  "bevy_ineffable_macros",
@@ -648,7 +648,7 @@ dependencies = [
 
 [[package]]
 name = "bevy_ineffable_macros"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "proc-macro2",
  "quote",

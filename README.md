@@ -32,7 +32,7 @@ A simple-to-use input manager for the Bevy game engine that empowers players and
 ```toml
 [dependencies]
 # Add bevy_ineffable as a dependency to your `Cargo.toml`
-bevy_ineffable = "0.1.0"
+bevy_ineffable = "0.2.0"
 ```
 
 ```rust no_run
@@ -99,7 +99,7 @@ cargo run --example basics
 
 | bevy   | bevy_ineffable |
 |--------|----------------|
-| 0.12.* | 0.1.0          |
+| 0.12.* | 0.1.0 - 0.2.0  |
 
 ## Roadmap
 
