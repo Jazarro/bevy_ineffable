@@ -40,13 +40,24 @@ pub struct AxisDeadZone {}
 // =====================================================================================================================
 
 impl SingleAxisBinding {
+    /// Creates and returns a new builder for a single axis analog binding.
+    ///
+    /// `Analog` takes a single analog input that returns a direction as an `f32`.
     pub fn analog() {
-        panic!("Yet to be implemented.");
+        error!("Yet to be implemented.");
     }
+    /// Creates and returns a new builder for a single axis hold binding.
+    ///
+    /// `Hold` takes two binary inputs (negative and positive) that set the axis output to -1 or 1 as long as
+    /// exactly one of them is active.
     #[must_use]
     pub fn hold() -> SingleAxisHoldBuilder {
         SingleAxisHoldBuilder::default()
     }
+    /// Creates and returns a new builder for a single axis toggle binding.
+    ///
+    /// `Toggle` takes two pulse inputs (negative and positive) that toggle the axis output between 0, -1 and 1 when
+    /// they pulse.
     #[must_use]
     pub fn toggle() -> SingleAxisToggleBuilder {
         SingleAxisToggleBuilder::default()

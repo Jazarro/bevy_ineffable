@@ -1,3 +1,5 @@
+//! Handles registering `InputAction`s. This should be done once per `InputAction` enum at the start of the game.
+
 use bevy::app::App;
 use bevy::log::{error, warn};
 

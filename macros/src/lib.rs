@@ -8,7 +8,7 @@ use proc_macro::TokenStream;
 
 use syn::DeriveInput;
 
-use crate::function::implement_input_function;
+use crate::function::process_ineff_function;
 use crate::input_action::implement_input_action;
 
 mod function;
@@ -64,5 +64,5 @@ pub fn derive_input_action(input: TokenStream) -> TokenStream {
 /// ```
 #[proc_macro]
 pub fn ineff(item: TokenStream) -> TokenStream {
-    implement_input_function(item)
+    process_ineff_function(item)
 }

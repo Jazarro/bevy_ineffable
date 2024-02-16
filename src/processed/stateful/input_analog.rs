@@ -11,7 +11,7 @@ pub(crate) struct StatefulAnalogInput {
 }
 
 impl StatefulAnalogInput {
-    pub(crate) fn update(&mut self, sources: &mut InputSources<'_>) {
+    pub(crate) fn _update(&mut self, sources: &mut InputSources<'_>) {
         self.value_previous = self.value_current;
 
         // If the post-acceptance-delay is active, then do nothing. We should ignore all user input.

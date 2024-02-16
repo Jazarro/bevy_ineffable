@@ -1,3 +1,5 @@
+//! Holds the `InputAction` trait. Game devs don't really need this, the trait should always be derived.
+
 use std::fmt::Debug;
 
 use bevy::prelude::KeyCode;

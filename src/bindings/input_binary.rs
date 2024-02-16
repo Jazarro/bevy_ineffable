@@ -102,19 +102,36 @@ impl Threshold {
 pub enum KeyGroup {
     /// Matches both `KeyCode::Return` and `KeyCode::NumpadEnter`.
     Enter,
+    /// Matches either of the control keys.
     Control,
+    /// Matches either of the shift keys.
     Shift,
+    /// Matches either of the alt keys.
     Alt,
+    /// Matches either of the super keys.
+    ///
+    /// Generic keyboards usually display these keys with the *Microsoft Windows* logo.
+    /// Apple keyboards call this key the *Command Key* and display it using the ⌘ character.
     Super,
+    /// Number zero from the top row or the numpad.
     Number0,
+    /// Number one from the top row or the numpad.
     Number1,
+    /// Number two from the top row or the numpad.
     Number2,
+    /// Number three from the top row or the numpad.
     Number3,
+    /// Number four from the top row or the numpad.
     Number4,
+    /// Number five from the top row or the numpad.
     Number5,
+    /// Number six from the top row or the numpad.
     Number6,
+    /// Number seven from the top row or the numpad.
     Number7,
+    /// Number eight from the top row or the numpad.
     Number8,
+    /// Number nine from the top row or the numpad.
     Number9,
 }
 

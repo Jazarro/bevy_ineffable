@@ -1,3 +1,6 @@
+//! Handles reports containing lint warnings about `InputConfig`s. Aims to provide detailed, helpful error messages
+//! about misconfigured keybinding profiles, and offer concrete suggestions on how to fix the problems.
+
 use std::fmt::{Display, Formatter};
 
 use bevy::log::{error, info, warn};
@@ -151,10 +154,6 @@ pub enum InputConfigProblem {
         loc: ActionLocation,
         actual_millis: usize,
     },
-    // ChargedPresetDurationTooShort {
-    //     loc: ActionLocation,
-    //     actual_millis: u64,
-    // },
     // TODO: sequences that contain Dummy and something else.
 }
 
@@ -220,10 +219,7 @@ impl InputConfigProblem {
                 \tA sequence is a series of inputs that must be triggered one after another, with a maximum delay between individual inputs. For example: entering a cheat code.\n\
                 \tThe maximum delay (currently {actual_millis}ms) is the maximum amount of time between any two inputs in the sequence.\n\
                 \tThis seems unrealistically low and may never activate. Did you perhaps mean {actual_millis} seconds? If so, change to `{actual_millis}000`.")
-            } // InputConfigProblem::ChargedPresetDurationTooShort { loc, actual_millis } => {
-              //     format!("Binding {loc} contains a charged preset with a charge time of {actual_millis} milliseconds.\n\
-              //     \tThe minimum charge time is {} milliseconds, so that will be used instead.", MINIMUM_CHARGE_DURATION_MILLIS)
-              // }
+            }
         }
     }
 }

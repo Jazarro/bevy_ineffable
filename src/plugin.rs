@@ -1,3 +1,5 @@
+//! Contains a bevy plugin to help set up all the resources etc. needed by Ineffable.
+
 use bevy::input::mouse::{MouseMotion, MouseWheel};
 use bevy::prelude::*;
 
@@ -33,9 +35,7 @@ impl Plugin for IneffablePlugin {
             .add_systems(
                 PreUpdate,
                 ((read_gamepad_events, read_mouse_events), update_input).chain(),
-            )
-        // .add_systems(Update, peek_at_input)
-        ;
+            );
 
         // TODO: Hide behind optional Reflect feature?
         app.register_type::<InputBinding>()

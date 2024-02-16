@@ -22,10 +22,10 @@ A simple-to-use input manager for the Bevy game engine that empowers players and
     - Scans player-made keybinding configurations and composes a report containing detailed feedback.
 4. Recognise the existence of different kinds of input (axis, dual-axis, continuous and pulse), and leverage the type
    system to differentiate between them at compile time.
-    - DualAxis: Inputs a direction along two axes. E.g. an analog stick.
-    - SingleAxis: Inputs a direction along one axis. E.g. the mouse wheel.
-    - Continuous: Is active continuously; for example, while a button is held down.
-    - Pulse: Pulses occasionally; for example, when a button is pressed.
+    - _DualAxis_: Inputs a direction along two axes. E.g. an analog stick.
+    - _SingleAxis_: Inputs a direction along one axis. E.g. the mouse wheel.
+    - _Continuous_: Is active continuously. E.g. while a button is held down.
+    - _Pulse_: Pulses occasionally. E.g. clicking left mouse button.
 
 ## Quickstart
 
@@ -118,6 +118,7 @@ cargo run --example basics
 - Dynamic buttons prompts. Show what button the player must press on the screen, regardless of what keybindings the
   player has set for themselves.
 - Tie-in to GUI?
+- Analog input
 
 ## License
 

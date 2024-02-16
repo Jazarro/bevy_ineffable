@@ -53,7 +53,7 @@ pub enum PlayerInput {
     /// Tints the player red.
     #[ineffable(continuous)] //<== continuous: returns true as long as the input is active.
     Blush,
-    /// Backspace
+    /// Space bar
     /// Teleports the player back in the direction of the center of the screen.
     #[ineffable(pulse)] //<== pulse: returns true for one tick when the input activates.
     Teleport,

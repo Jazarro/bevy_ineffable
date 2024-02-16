@@ -1,3 +1,5 @@
+//! Contains the `SystemParam` that systems can use to set `InputConfig`s.
+
 use bevy::ecs::system::SystemParam;
 use bevy::prelude::{Res, ResMut};
 

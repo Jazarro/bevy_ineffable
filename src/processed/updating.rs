@@ -36,7 +36,7 @@ pub(crate) fn update_input(mut bindings: ResMut<'_, Ineffable>, mut sources: Inp
 }
 
 // TODO: Remove.
-pub(crate) fn peek_at_input(sources: InputSources<'_>) {
+pub(crate) fn _peek_at_input(sources: InputSources<'_>) {
     for btn in sources.input_mouse_btn.get_just_pressed() {
         warn!("JustPressed: {:?}", btn);
     }
