@@ -1,19 +1,20 @@
-use bevy::prelude::Reflect;
+use bevy::prelude::{GamepadButton, Reflect};
 
 use crate::bindings::{BinaryInput, Chord};
 use crate::processed::processor::Helper;
+use crate::processed::stateful::input_analog::StatefulAnalogInput;
 use crate::processed::updating::InputSources;
 use crate::reporting::{ActionLocation, InputConfigProblem, InputConfigReport};
 
 #[derive(Debug, Reflect, Clone)]
 pub(crate) struct StatefulBinaryInput {
-    pub(crate) binary_input: ProcessedChord,
-    pub(crate) active: bool,
-    pub(crate) active_previous_tick: bool,
-    pub(crate) blocked: bool,
+    binary_input: ProcessedChord,
+    active: bool,
+    active_previous_tick: bool,
+    blocked: bool,
     /// These are the inputs that conflict with this one and take precedence over it.
     /// If any of these binary inputs is active, this one cannot be active.
-    pub(crate) blockers: Vec<Chord>,
+    blockers: Vec<Chord>,
 }
 
 /// This enum prevents us requiring a Vec for every single input.
@@ -112,8 +113,25 @@ impl StatefulBinaryInput {
     }
     fn is_pressed(input: &BinaryInput, sources: &InputSources<'_>) -> bool {
         match input {
-            BinaryInput::Key(key_code) => sources.keys.pressed(*key_code),
-            BinaryInput::MouseButton(mouse_btn) => sources.mouse_buttons.pressed(*mouse_btn),
+            BinaryInput::Key(key_code) => sources.input_keycodes.pressed(*key_code),
+            BinaryInput::ScanCode(scan_code) => sources.input_scancodes.pressed(*scan_code),
+            BinaryInput::KeyGroup(group) => group
+                .iter()
+                .any(|key_code| sources.input_keycodes.pressed(*key_code)),
+            BinaryInput::MouseButton(mouse_btn) => sources.input_mouse_btn.pressed(*mouse_btn),
+            BinaryInput::Gamepad(btn) => {
+                // For now, we don't support local multiplayer. (Will change in the future)
+                // We'll check if the button is active on *any* connected gamepad.
+                sources.gamepads.iter().any(|gamepad| {
+                    sources
+                        .input_gamepad_btn
+                        .pressed(GamepadButton::new(gamepad, *btn))
+                })
+            }
+            BinaryInput::Axis(input, threshold) => {
+                let value = StatefulAnalogInput::calc_value(input, sources);
+                threshold.is_reached(value)
+            }
         }
     }
 }

@@ -8,9 +8,9 @@ use crate::input_action::InputAction;
 use crate::phantom::{IAWrp, SingleAxis};
 use crate::processed::bound_action::BoundAction;
 use crate::processed::processor::Helper;
-use crate::processed::stateful::binary_input::StatefulBinaryInput;
+use crate::processed::stateful::input_binary::StatefulBinaryInput;
 use crate::processed::stateful::pulse::StatefulPulseBinding;
-use crate::processed::stateful::{binary_input, pulse};
+use crate::processed::stateful::{input_binary, pulse};
 use crate::processed::updating::InputSources;
 use crate::reporting::{ActionLocation, InputConfigProblem, InputConfigReport};
 use crate::resources::meta_data::IneffableMetaItem;
@@ -18,7 +18,7 @@ use crate::resources::Ineffable;
 
 #[derive(Debug, Default, Reflect, Clone)]
 pub(crate) struct StatefulSingleAxisBinding {
-    pub(crate) bindings: Vec<StatefulSingleAxisBindingVariant>,
+    bindings: Vec<StatefulSingleAxisBindingVariant>,
     pub(crate) value: f32,
     toggled_direction: Direction1D,
 }
@@ -89,8 +89,8 @@ pub(crate) fn check_for_problems(
                     is_now: format!("{axis:?}"),
                 });
             }
-            binary_input::check_for_problems(neg, report, loc);
-            binary_input::check_for_problems(pos, report, loc);
+            input_binary::check_for_problems(neg, report, loc);
+            input_binary::check_for_problems(pos, report, loc);
         }
         SingleAxisBinding::Toggle(neg, pos) => {
             if matches!(neg, PulseBinding::Dummy) && matches!(pos, PulseBinding::Dummy) {
@@ -110,7 +110,7 @@ impl StatefulSingleAxisBinding {
         let stateful_bindings = data
             .iter()
             .filter_map(|binding| {
-                if let InputBinding::Axis(axis) = binding {
+                if let InputBinding::SingleAxis(axis) = binding {
                     Some(axis)
                 } else {
                     None

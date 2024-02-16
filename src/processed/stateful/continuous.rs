@@ -10,9 +10,9 @@ use crate::input_action::InputAction;
 use crate::phantom::{Continuous, IAWrp};
 use crate::processed::bound_action::BoundAction;
 use crate::processed::processor::Helper;
-use crate::processed::stateful::binary_input::StatefulBinaryInput;
+use crate::processed::stateful::input_binary::StatefulBinaryInput;
 use crate::processed::stateful::pulse::StatefulPulseBinding;
-use crate::processed::stateful::{binary_input, pulse};
+use crate::processed::stateful::{input_binary, pulse};
 use crate::processed::updating::InputSources;
 use crate::reporting::{ActionLocation, InputConfigProblem, InputConfigReport};
 use crate::resources::meta_data::IneffableMetaItem;
@@ -85,7 +85,7 @@ pub(crate) fn check_for_problems(
                     is_now: format!("{continuous:?}"),
                 });
             }
-            binary_input::check_for_problems(input, report, loc);
+            input_binary::check_for_problems(input, report, loc);
         }
         ContinuousBinding::Toggle(pulse) => {
             if matches!(pulse, PulseBinding::Dummy) {

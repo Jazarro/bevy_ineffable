@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 use crate::bindings::{Chord, ChordLike, InputBinding, PulseBinding};
 use crate::phantom::{Continuous, IBWrp, Pulse};
 
-#[derive(Debug, Default, Serialize, Deserialize, Reflect, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Serialize, Deserialize, Reflect, Clone, PartialEq)]
 pub enum ContinuousBinding {
     #[default]
     Dummy,

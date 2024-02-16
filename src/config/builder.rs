@@ -13,7 +13,7 @@ use crate::phantom::{IAWrp, IBWrp};
 ///
 /// Using the builder can be nice when prototyping, but it is recommended that in the final release, `InputConfig`
 /// is loaded as an asset from a file.
-#[derive(Debug, Default, Serialize, Deserialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Default, Serialize, Deserialize, Clone, PartialEq)]
 pub struct InputConfigBuilder {
     double_click_timing: Option<DurationInMillis>,
     post_acceptance_delay: Option<DurationInMillis>,

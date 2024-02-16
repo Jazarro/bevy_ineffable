@@ -15,7 +15,7 @@ use crate::config::builder::InputConfigBuilder;
 /// It is recommended that the developer provides a config with sensible defaults, and allows players to create their
 /// own configs in which they can selectively override those defaults. The base settings can then be merged with
 /// the player-provided overrides, and the result offered to ineffable to use during gameplay.
-#[derive(Debug, Default, Serialize, Deserialize, Asset, Reflect, Clone, PartialEq, Eq)]
+#[derive(Debug, Default, Serialize, Deserialize, Asset, Reflect, Clone, PartialEq)]
 pub struct InputConfig {
     #[serde(default)]
     pub double_click_timing: Option<DurationInMillis>,

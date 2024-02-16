@@ -83,5 +83,5 @@ pub struct IAWrp<I: InputAction, Kind>(pub I, pub PhantomData<Kind>);
 /// let _ : IBWrp<Continuous> = ContinuousBinding::hold(KeyCode::Space);
 /// let _ : IBWrp<Pulse> = PulseBinding::just_pressed(KeyCode::Space);
 /// ```
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 pub struct IBWrp<Kind>(pub InputBinding, pub PhantomData<Kind>);

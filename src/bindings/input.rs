@@ -1,26 +1,38 @@
-use bevy::prelude::{KeyCode, MouseButton, Reflect};
+use bevy::prelude::Reflect;
 use serde::{Deserialize, Serialize};
 
-/// A chord is a set of unique inputs that have to be activated at the same time.
-/// Example: Ctrl-S to save a document.
-/// An empty chord is considered a dummy, it will never activate.
-pub type Chord = Vec<BinaryInput>;
+use crate::bindings::{BinaryInput, ContinuousBinding, PulseBinding, SingleAxisBinding};
+use crate::input_action::InputKind;
 
-/// Something that can provide a discrete, binary signal: on or off.
-/// Example: a button that can either be pressed down or not.
-#[derive(Debug, Serialize, Deserialize, Reflect, Clone, PartialEq, Eq, Hash)]
-pub enum BinaryInput {
-    Key(KeyCode),
-    // KeyGroup(KeyGroup),
-    MouseButton(MouseButton),
-    // MouseWheel(),
-    // MouseMotion(),
-    // GamePadButton,
-    // AnalogStick,
-    // Etc,
+#[derive(Debug, Serialize, Deserialize, Reflect, Clone, PartialEq)]
+pub enum InputBinding {
+    SingleAxis(SingleAxisBinding),
+    DualAxis {
+        x: SingleAxisBinding,
+        y: SingleAxisBinding,
+    },
+    Continuous(ContinuousBinding),
+    Pulse(PulseBinding),
 }
 
-#[derive(Debug, Serialize, Deserialize, Reflect, Clone, PartialEq, Eq, Hash)]
+impl InputBinding {
+    #[must_use]
+    pub fn kind(&self) -> InputKind {
+        match self {
+            InputBinding::SingleAxis(_) => InputKind::SingleAxis,
+            InputBinding::DualAxis { .. } => InputKind::DualAxis,
+            InputBinding::Continuous(_) => InputKind::Continuous,
+            InputBinding::Pulse(_) => InputKind::Pulse,
+        }
+    }
+}
+
+// =====================================================================================================================
+// ===== ChordLike and From implementations
+// ===== Used for builder pattern
+// =====================================================================================================================
+
+#[derive(Debug, Serialize, Deserialize, Reflect, Clone, PartialEq)]
 pub enum ChordLike {
     Single(BinaryInput),
     Multiple(Vec<BinaryInput>),
@@ -84,17 +96,5 @@ where
 {
     fn from((a, b, c, d, e): (A, B, C, D, E)) -> Self {
         ChordLike::Multiple(vec![a.into(), b.into(), c.into(), d.into(), e.into()])
-    }
-}
-
-impl From<MouseButton> for BinaryInput {
-    fn from(input: MouseButton) -> Self {
-        BinaryInput::MouseButton(input)
-    }
-}
-
-impl From<KeyCode> for BinaryInput {
-    fn from(input: KeyCode) -> Self {
-        BinaryInput::Key(input)
     }
 }

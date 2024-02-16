@@ -4,7 +4,7 @@
 #![deny(
 rust_2018_compatibility,
 rust_2018_idioms,
-unused,
+// unused,
 nonstandard_style,
 future_incompatible,
 missing_debug_implementations,

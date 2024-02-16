@@ -4,18 +4,40 @@ use bevy::log::error;
 use bevy::prelude::Reflect;
 use serde::{Deserialize, Serialize};
 
-use crate::bindings::binding::{AnalogAxisInput, AxisInversion, AxisOptions};
-use crate::bindings::{Chord, ChordLike, InputBinding, PulseBinding};
+use crate::bindings::{AnalogInput, Chord, ChordLike, InputBinding, PulseBinding};
 use crate::phantom::{IBWrp, Pulse, SingleAxis};
 
-#[derive(Debug, Default, Serialize, Deserialize, Reflect, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Serialize, Deserialize, Reflect, Clone, PartialEq)]
 pub enum SingleAxisBinding {
     #[default]
     Dummy,
-    Analog(AnalogAxisInput, AxisInversion, Option<AxisOptions>),
+    Analog(AnalogInput, AxisInversion, Option<AxisOptions>),
     Hold(Chord, Chord),
     Toggle(PulseBinding, PulseBinding),
 }
+
+#[derive(Debug, Default, Serialize, Deserialize, Reflect, Clone, PartialEq, Eq, Hash)]
+pub enum AxisInversion {
+    #[default]
+    NotInverted,
+    Inverted,
+}
+
+// TODO:....
+#[derive(Debug, Serialize, Deserialize, Reflect, Clone, PartialEq, Eq, Hash)]
+pub struct AxisOptions {
+    // pub positive_low: f32,
+    // pub negative_low: f32,
+    // pub sensitivity: f32,
+}
+
+// TODO:...
+#[derive(Debug, Serialize, Deserialize, Reflect, Clone, PartialEq, Eq, Hash)]
+pub struct AxisDeadZone {}
+
+// =====================================================================================================================
+// ===== Builder stuff:
+// =====================================================================================================================
 
 impl SingleAxisBinding {
     pub fn analog() {
@@ -54,7 +76,7 @@ impl SingleAxisHoldBuilder {
     }
     #[must_use]
     pub fn build(self) -> IBWrp<SingleAxis> {
-        let binding = InputBinding::Axis(SingleAxisBinding::Hold(
+        let binding = InputBinding::SingleAxis(SingleAxisBinding::Hold(
             self.negative.unwrap_or_default(),
             self.positive.unwrap_or_default(),
         ));
@@ -85,7 +107,7 @@ impl SingleAxisToggleBuilder {
     }
     #[must_use]
     pub fn build(self) -> IBWrp<SingleAxis> {
-        let binding = InputBinding::Axis(SingleAxisBinding::Toggle(
+        let binding = InputBinding::SingleAxis(SingleAxisBinding::Toggle(
             self.negative.unwrap_or(PulseBinding::Dummy),
             self.positive.unwrap_or(PulseBinding::Dummy),
         ));

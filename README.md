@@ -104,7 +104,6 @@ cargo run --example basics
 ## Roadmap
 
 - Macros
-- Full gamepad and mouse support
 - Multiple sets of bindings for the same group. This could be used, for example, to have different keybindings for
   the same actions for different players.
 - Different binding contexts. This would allow bindings that might otherwise conflict with each other, because they

@@ -8,7 +8,7 @@ use crate::bindings::{Chord, ChordLike, InputBinding};
 use crate::config::DurationInMillis;
 use crate::phantom::{IBWrp, Pulse};
 
-#[derive(Debug, Default, Serialize, Deserialize, Reflect, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Serialize, Deserialize, Reflect, Clone, PartialEq)]
 pub enum PulseBinding {
     #[default]
     Dummy,

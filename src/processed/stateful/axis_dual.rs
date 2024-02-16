@@ -12,8 +12,8 @@ use crate::resources::Ineffable;
 
 #[derive(Debug, Reflect, Clone)]
 pub(crate) struct StatefulDualAxisBinding {
-    pub(crate) x: StatefulSingleAxisBinding,
-    pub(crate) y: StatefulSingleAxisBinding,
+    x: StatefulSingleAxisBinding,
+    y: StatefulSingleAxisBinding,
     pub(crate) value: Vec2,
 }
 
@@ -39,7 +39,10 @@ impl StatefulDualAxisBinding {
             .iter()
             .filter_map(|binding| {
                 if let InputBinding::DualAxis { x, y } = binding {
-                    Some((InputBinding::Axis(x.clone()), InputBinding::Axis(y.clone())))
+                    Some((
+                        InputBinding::SingleAxis(x.clone()),
+                        InputBinding::SingleAxis(y.clone()),
+                    ))
                 } else {
                     None
                 }

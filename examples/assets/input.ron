@@ -8,7 +8,7 @@ InputConfig(
                 ),
             ],
             "Rotate": [
-                Axis(Hold([Key(Left)], [Key(Right)])),
+                SingleAxis(Hold([Key(Left)], [Key(Right)])),
             ],
             "Blush": [
                 Continuous(Hold([Key(ShiftLeft)])),

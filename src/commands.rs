@@ -1,3 +1,6 @@
+use bevy::ecs::system::SystemParam;
+use bevy::prelude::{Res, ResMut};
+
 use crate::config::InputConfig;
 use crate::prelude::Ineffable;
 use crate::processed::bound_action::BoundAction;
@@ -5,8 +8,6 @@ use crate::processed::processor::{collect_inputs, validate};
 use crate::reporting::InputConfigReport;
 use crate::resources::ineffable_settings::IneffableSettings;
 use crate::resources::meta_data::IneffableMetaData;
-use bevy::ecs::system::SystemParam;
-use bevy::prelude::{Res, ResMut};
 
 /// Use this as a system parameter to validate and set `InputConfig`s.
 ///

@@ -39,7 +39,7 @@ pub(crate) fn collect_inputs<'a>(
         })
         .for_each(|(meta, binding)| match meta.kind {
             InputKind::SingleAxis => {
-                if let InputBinding::Axis(axis) = binding {
+                if let InputBinding::SingleAxis(axis) = binding {
                     axis_single::collect(&mut out, meta, axis);
                 };
             }
@@ -103,7 +103,7 @@ pub(crate) fn validate(meta_data: &IneffableMetaData, config: &InputConfig) -> I
                 }
 
                 match binding {
-                    InputBinding::Axis(axis) => {
+                    InputBinding::SingleAxis(axis) => {
                         if matches!(axis, SingleAxisBinding::Dummy) {
                             report.warning(InputConfigProblem::RootBindingIsDummy {
                                 loc: loc.clone(),

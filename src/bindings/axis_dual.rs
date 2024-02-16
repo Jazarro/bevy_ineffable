@@ -49,7 +49,7 @@ impl DualAxisBindingBuilder {
 
     #[must_use]
     fn unwrap_axis(input: IBWrp<SingleAxis>) -> SingleAxisBinding {
-        if let InputBinding::Axis(axis) = input.0 {
+        if let InputBinding::SingleAxis(axis) = input.0 {
             axis
         } else {
             // Because of the wrapper containing the PhantomData, this should normally never happen (because it
