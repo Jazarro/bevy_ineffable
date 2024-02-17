@@ -2,10 +2,10 @@ InputConfig(
     bindings: {
         "Action": {
             "Defend": [
-                Pulse(JustPressed([Key(Q)])),
+                Pulse(JustPressed([Key(KeyQ)])),
             ],
             "Attack": [
-                Pulse(JustPressed([Key(W)])),
+                Pulse(JustPressed([Key(KeyW)])),
             ],
         },
     },

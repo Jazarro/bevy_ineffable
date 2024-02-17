@@ -3,6 +3,7 @@
 
 use bevy::app::{Startup, Update};
 use bevy::prelude::*;
+use bevy::render::render_asset::RenderAssetUsages;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 
 use bevy_ineffable::bindings::AnalogInput;
@@ -92,14 +93,14 @@ fn create_config() -> InputConfig {
             DualAxisBinding::builder()
                 .set_x(
                     SingleAxisBinding::hold()
-                        .set_negative(KeyCode::A)
-                        .set_positive(KeyCode::D)
+                        .set_negative(KeyCode::KeyA)
+                        .set_positive(KeyCode::KeyD)
                         .build(),
                 )
                 .set_y(
                     SingleAxisBinding::hold()
-                        .set_negative(KeyCode::S)
-                        .set_positive(KeyCode::W)
+                        .set_negative(KeyCode::KeyS)
+                        .set_positive(KeyCode::KeyW)
                         .build(),
                 )
                 .build(),
@@ -122,8 +123,8 @@ fn create_config() -> InputConfig {
         .bind(
             ineff!(PlayerInput::Rotate),
             SingleAxisBinding::hold()
-                .set_negative(KeyCode::Left)
-                .set_positive(KeyCode::Right)
+                .set_negative(KeyCode::ArrowLeft)
+                .set_positive(KeyCode::ArrowRight)
                 .build(),
         )
         .bind(
@@ -217,5 +218,6 @@ fn white_square() -> Image {
         TextureDimension::D2,
         &[255, 255, 255, 255],
         TextureFormat::Rgba8Unorm,
+        RenderAssetUsages::RENDER_WORLD,
     )
 }

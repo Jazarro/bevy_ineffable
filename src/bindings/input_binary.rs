@@ -1,6 +1,6 @@
 use std::slice::Iter;
 
-use bevy::prelude::{GamepadButtonType, KeyCode, MouseButton, Reflect, ScanCode};
+use bevy::prelude::{GamepadButtonType, KeyCode, MouseButton, Reflect};
 use serde::{Deserialize, Serialize};
 
 use crate::bindings::input_analog::AnalogInput;
@@ -15,7 +15,6 @@ pub type Chord = Vec<BinaryInput>;
 #[derive(Debug, Serialize, Deserialize, Reflect, Clone, PartialEq)]
 pub enum BinaryInput {
     Key(KeyCode),
-    ScanCode(ScanCode),
     KeyGroup(KeyGroup),
     MouseButton(MouseButton),
     Gamepad(GamepadButtonType),
@@ -138,21 +137,21 @@ pub enum KeyGroup {
 impl KeyGroup {
     pub fn iter(&self) -> Iter<'_, KeyCode> {
         match self {
-            KeyGroup::Enter => [KeyCode::Return, KeyCode::NumpadEnter].iter(),
+            KeyGroup::Enter => [KeyCode::Enter, KeyCode::NumpadEnter].iter(),
             KeyGroup::Control => [KeyCode::ControlLeft, KeyCode::ControlRight].iter(),
             KeyGroup::Shift => [KeyCode::ShiftLeft, KeyCode::ShiftRight].iter(),
             KeyGroup::Alt => [KeyCode::AltLeft, KeyCode::AltRight].iter(),
             KeyGroup::Super => [KeyCode::SuperLeft, KeyCode::SuperRight].iter(),
-            KeyGroup::Number0 => [KeyCode::Key0, KeyCode::Numpad0].iter(),
-            KeyGroup::Number1 => [KeyCode::Key1, KeyCode::Numpad1].iter(),
-            KeyGroup::Number2 => [KeyCode::Key2, KeyCode::Numpad2].iter(),
-            KeyGroup::Number3 => [KeyCode::Key3, KeyCode::Numpad3].iter(),
-            KeyGroup::Number4 => [KeyCode::Key4, KeyCode::Numpad4].iter(),
-            KeyGroup::Number5 => [KeyCode::Key5, KeyCode::Numpad5].iter(),
-            KeyGroup::Number6 => [KeyCode::Key6, KeyCode::Numpad6].iter(),
-            KeyGroup::Number7 => [KeyCode::Key7, KeyCode::Numpad7].iter(),
-            KeyGroup::Number8 => [KeyCode::Key8, KeyCode::Numpad8].iter(),
-            KeyGroup::Number9 => [KeyCode::Key9, KeyCode::Numpad9].iter(),
+            KeyGroup::Number0 => [KeyCode::Digit0, KeyCode::Numpad0].iter(),
+            KeyGroup::Number1 => [KeyCode::Digit1, KeyCode::Numpad1].iter(),
+            KeyGroup::Number2 => [KeyCode::Digit2, KeyCode::Numpad2].iter(),
+            KeyGroup::Number3 => [KeyCode::Digit3, KeyCode::Numpad3].iter(),
+            KeyGroup::Number4 => [KeyCode::Digit4, KeyCode::Numpad4].iter(),
+            KeyGroup::Number5 => [KeyCode::Digit5, KeyCode::Numpad5].iter(),
+            KeyGroup::Number6 => [KeyCode::Digit6, KeyCode::Numpad6].iter(),
+            KeyGroup::Number7 => [KeyCode::Digit7, KeyCode::Numpad7].iter(),
+            KeyGroup::Number8 => [KeyCode::Digit8, KeyCode::Numpad8].iter(),
+            KeyGroup::Number9 => [KeyCode::Digit9, KeyCode::Numpad9].iter(),
         }
     }
 }
@@ -164,12 +163,6 @@ impl KeyGroup {
 impl From<KeyCode> for BinaryInput {
     fn from(input: KeyCode) -> Self {
         BinaryInput::Key(input)
-    }
-}
-
-impl From<ScanCode> for BinaryInput {
-    fn from(input: ScanCode) -> Self {
-        BinaryInput::ScanCode(input)
     }
 }
 

@@ -114,7 +114,6 @@ impl StatefulBinaryInput {
     fn is_pressed(input: &BinaryInput, sources: &InputSources<'_>) -> bool {
         match input {
             BinaryInput::Key(key_code) => sources.input_keycodes.pressed(*key_code),
-            BinaryInput::ScanCode(scan_code) => sources.input_scancodes.pressed(*scan_code),
             BinaryInput::KeyGroup(group) => group
                 .iter()
                 .any(|key_code| sources.input_keycodes.pressed(*key_code)),

@@ -1,5 +1,4 @@
 use bevy::ecs::system::SystemParam;
-use bevy::input::Input;
 use bevy::log::{error, info, warn};
 use bevy::prelude::*;
 
@@ -13,10 +12,9 @@ pub(crate) struct InputSources<'w> {
     pub(crate) time: Res<'w, Time>,
     pub(crate) from_events: Res<'w, IneffableEventSources>,
     pub(crate) gamepads: Res<'w, Gamepads>,
-    pub(crate) input_keycodes: Res<'w, Input<KeyCode>>,
-    pub(crate) input_scancodes: Res<'w, Input<ScanCode>>,
-    pub(crate) input_mouse_btn: Res<'w, Input<MouseButton>>,
-    pub(crate) input_gamepad_btn: Res<'w, Input<GamepadButton>>,
+    pub(crate) input_keycodes: Res<'w, ButtonInput<KeyCode>>,
+    pub(crate) input_mouse_btn: Res<'w, ButtonInput<MouseButton>>,
+    pub(crate) input_gamepad_btn: Res<'w, ButtonInput<GamepadButton>>,
     pub(crate) axis_gamepad_btn: Res<'w, Axis<GamepadButton>>,
     pub(crate) axis_gamepad_axis: Res<'w, Axis<GamepadAxis>>,
 }

@@ -18,7 +18,7 @@ fn main() {
         .add_systems(Startup, init)
         .add_systems(
             Update,
-            print_on_load.run_if(resource_exists::<CurrentlyLoading>()),
+            print_on_load.run_if(resource_exists::<CurrentlyLoading>),
         )
         .add_systems(Update, spell_casting)
         .run();

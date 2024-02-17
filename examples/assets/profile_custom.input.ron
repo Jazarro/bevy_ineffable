@@ -11,7 +11,7 @@ InputConfig(
             // The 'Attack'-action is overridden.
             // The binding from the base config (W) doesn't work anymore. Instead, you have to press the S key.
             "Attack": [
-                Pulse(JustPressed([Key(S)])),
+                Pulse(JustPressed([Key(KeyS)])),
             ],
 
         },

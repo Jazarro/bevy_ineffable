@@ -3,14 +3,14 @@ InputConfig(
         "CheatCodes": {
             "Password": [
                 Pulse(Sequence(1000, [
-                    [Key(P)], [Key(A)], [Key(S)], [Key(S)], [Key(W)], [Key(O)], [Key(R)], [Key(D)],
+                    [Key(KeyP)], [Key(KeyA)], [Key(KeyS)], [Key(KeyS)], [Key(KeyW)], [Key(KeyO)], [Key(KeyR)], [Key(KeyD)],
                 ])),
             ],
             "KonamiCode": [
-                Pulse(Sequence(1000, [
-                    [Key(Up)], [Key(Up)], [Key(Down)], [Key(Down)],
-                    [Key(Left)], [Key(Right)], [Key(Left)], [Key(Right)],
-                    [Key(B)], [Key(A)],
+                Pulse(Sequence(2000, [
+                    [Key(ArrowUp)], [Key(ArrowUp)], [Key(ArrowDown)], [Key(ArrowDown)],
+                    [Key(ArrowLeft)], [Key(ArrowRight)], [Key(ArrowLeft)], [Key(ArrowRight)],
+                    [Key(KeyB)], [Key(KeyA)],
                 ])),
             ],
         },

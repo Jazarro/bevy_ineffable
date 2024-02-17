@@ -11,6 +11,7 @@ use std::time::Duration;
 
 use bevy::app::{Startup, Update};
 use bevy::prelude::*;
+use bevy::render::render_asset::RenderAssetUsages;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 
 use bevy_ineffable::prelude::*;
@@ -97,8 +98,8 @@ fn player_wiggle(
     } else if !player.wiggle_timer.finished() {
         // A timer is running, so we're currently animating the wiggle.
         player.wiggle_timer.tick(time.delta());
-        let cos_wave = (player.wiggle_timer.percent() * TAU * NR_BOUNCES).cos() * -1.;
-        let amplitude_modifier = player.wiggle_timer.percent_left();
+        let cos_wave = (player.wiggle_timer.fraction() * TAU * NR_BOUNCES).cos() * -1.;
+        let amplitude_modifier = player.wiggle_timer.fraction_remaining();
         let fading_cos_wave = cos_wave * amplitude_modifier;
         1.0 + fading_cos_wave * player.wiggle_strength
     } else {
@@ -119,5 +120,6 @@ fn make_square() -> Image {
         TextureDimension::D2,
         &[100, 100, 200, 255],
         TextureFormat::Rgba8Unorm,
+        RenderAssetUsages::RENDER_WORLD,
     )
 }

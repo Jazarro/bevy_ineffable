@@ -10,7 +10,8 @@ license = "MIT OR Apache-2.0"
 keywords = ["bevy", "input", "gamedev", "keybindings", "accessibility"]
 categories = ["game-development", "config", "accessibility", ]
 exclude = [
-    ".idea/*",
+    ".idea/**/*",
+    ".github/**/*",
     "TODO.md",
 ]
 
@@ -27,10 +28,10 @@ bevy_ineffable_macros = { version = "=0.3.0", path = "macros" }
 serde = { version = "1.0.196", features = ["derive"] }
 ron = "0.8.1"
 
-bevy = { version = "0.12.1", default-features = false, features = [
+bevy = { version = "0.13.0", default-features = false, features = [
     "bevy_asset",
     "serialize",
 ] }
 
 [dev-dependencies]
-bevy = { version = "0.12.1", default-features = true, features = [] }
+bevy = { version = "0.13.0", default-features = true, features = [] }

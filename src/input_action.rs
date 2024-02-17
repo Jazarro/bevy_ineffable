@@ -139,21 +139,21 @@ impl InputKind {
                 DualAxisBinding::builder()
                     .set_x(
                         SingleAxisBinding::hold()
-                            .set_negative(KeyCode::A)
-                            .set_positive(KeyCode::D)
+                            .set_negative(KeyCode::KeyA)
+                            .set_positive(KeyCode::KeyD)
                             .build(),
                     )
                     .set_y(
                         SingleAxisBinding::hold()
-                            .set_negative(KeyCode::S)
-                            .set_positive(KeyCode::W)
+                            .set_negative(KeyCode::KeyS)
+                            .set_positive(KeyCode::KeyW)
                             .build(),
                     )
                     .build()
                     .0
             }
             InputKind::Continuous => ContinuousBinding::hold(KeyCode::ShiftLeft).0,
-            InputKind::Pulse => PulseBinding::just_pressed(KeyCode::E).0,
+            InputKind::Pulse => PulseBinding::just_pressed(KeyCode::KeyE).0,
         }
     }
 }
