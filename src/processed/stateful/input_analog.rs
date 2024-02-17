@@ -6,12 +6,24 @@ use crate::processed::updating::InputSources;
 #[derive(Debug, Reflect, Clone)]
 pub(crate) struct StatefulAnalogInput {
     analog_input: AnalogInput,
-    value_current: f32,
-    value_previous: f32,
+    pub(crate) value_current: f32,
+    pub(crate) value_previous: f32,
 }
 
 impl StatefulAnalogInput {
-    pub(crate) fn _update(&mut self, sources: &mut InputSources<'_>) {
+    pub fn new(input: &AnalogInput) -> Self {
+        Self {
+            analog_input: input.clone(),
+            value_current: 0.,
+            value_previous: 0.,
+        }
+    }
+
+    pub(crate) fn just_activated(&self) -> bool {
+        self.value_current.abs() > f32::EPSILON && self.value_previous.abs() < f32::EPSILON
+    }
+
+    pub(crate) fn update(&mut self, sources: &mut InputSources<'_>) {
         self.value_previous = self.value_current;
 
         // If the post-acceptance-delay is active, then do nothing. We should ignore all user input.

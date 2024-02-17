@@ -11,29 +11,53 @@ use crate::phantom::{IBWrp, Pulse, SingleAxis};
 pub enum SingleAxisBinding {
     #[default]
     Dummy,
-    Analog(AnalogInput, AxisInversion, Option<AxisOptions>),
+    Analog {
+        input: AnalogInput,
+        #[serde(default)]
+        inversion: Inversion,
+        #[serde(default)]
+        sensitivity: Sensitivity,
+    },
     Hold(Chord, Chord),
     Toggle(PulseBinding, PulseBinding),
 }
 
 #[derive(Debug, Default, Serialize, Deserialize, Reflect, Clone, PartialEq, Eq, Hash)]
-pub enum AxisInversion {
+pub enum Inversion {
     #[default]
     NotInverted,
     Inverted,
 }
 
-// TODO:....
-#[derive(Debug, Serialize, Deserialize, Reflect, Clone, PartialEq, Eq, Hash)]
-pub struct AxisOptions {
-    // pub positive_low: f32,
-    // pub negative_low: f32,
-    // pub sensitivity: f32,
+impl Inversion {
+    pub fn maybe_invert(&self, value: f32) -> f32 {
+        match self {
+            Inversion::NotInverted => value,
+            Inversion::Inverted => -1.0 * value,
+        }
+    }
+    pub fn multiplier(&self) -> f32 {
+        match self {
+            Inversion::NotInverted => 1.0,
+            Inversion::Inverted => -1.0,
+        }
+    }
 }
 
-// TODO:...
-#[derive(Debug, Serialize, Deserialize, Reflect, Clone, PartialEq, Eq, Hash)]
-pub struct AxisDeadZone {}
+#[derive(Debug, Serialize, Deserialize, Reflect, Clone, PartialEq)]
+pub struct Sensitivity(f32);
+
+impl Sensitivity {
+    pub fn multiplier(&self) -> f32 {
+        self.0
+    }
+}
+
+impl Default for Sensitivity {
+    fn default() -> Self {
+        Sensitivity(1.0)
+    }
+}
 
 // =====================================================================================================================
 // ===== Builder stuff:
@@ -43,8 +67,8 @@ impl SingleAxisBinding {
     /// Creates and returns a new builder for a single axis analog binding.
     ///
     /// `Analog` takes a single analog input that returns a direction as an `f32`.
-    pub fn analog() {
-        error!("Yet to be implemented.");
+    pub fn analog(input: AnalogInput) -> SingleAxisAnalogBuilder {
+        SingleAxisAnalogBuilder::new(input)
     }
     /// Creates and returns a new builder for a single axis hold binding.
     ///
@@ -61,6 +85,47 @@ impl SingleAxisBinding {
     #[must_use]
     pub fn toggle() -> SingleAxisToggleBuilder {
         SingleAxisToggleBuilder::default()
+    }
+}
+
+#[derive(Debug)]
+pub struct SingleAxisAnalogBuilder {
+    input: AnalogInput,
+    inversion: Inversion,
+    sensitivity: Sensitivity,
+}
+
+impl SingleAxisAnalogBuilder {
+    #[must_use]
+    pub fn new(input: AnalogInput) -> Self {
+        Self {
+            input,
+            inversion: Inversion::default(),
+            sensitivity: Sensitivity::default(),
+        }
+    }
+    #[must_use]
+    pub fn invert(mut self) -> Self {
+        self.inversion = if matches!(self.inversion, Inversion::Inverted) {
+            Inversion::NotInverted
+        } else {
+            Inversion::Inverted
+        };
+        self
+    }
+    #[must_use]
+    pub fn set_sensitivity(mut self, sensitivity: f32) -> Self {
+        self.sensitivity.0 = sensitivity;
+        self
+    }
+    #[must_use]
+    pub fn build(self) -> IBWrp<SingleAxis> {
+        let binding = InputBinding::SingleAxis(SingleAxisBinding::Analog {
+            input: self.input,
+            inversion: self.inversion,
+            sensitivity: self.sensitivity,
+        });
+        IBWrp::<SingleAxis>(binding, PhantomData)
     }
 }
 

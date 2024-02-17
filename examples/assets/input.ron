@@ -6,9 +6,29 @@ InputConfig(
                     x: Hold([Key(A)], [Key(D)]),
                     y: Hold([Key(S)], [Key(W)]),
                 ),
+                DualAxis(
+                    x: Analog(
+                        input: GamePad(RightStickX),
+                        sensitivity: Sensitivity(5.0),
+                    ),
+                    y: Analog(
+                        input: GamePad(RightStickY),
+                        sensitivity: Sensitivity(5.0),
+                    ),
+                ),
             ],
             "Rotate": [
                 SingleAxis(Hold([Key(Left)], [Key(Right)])),
+                SingleAxis(Analog(
+                    input: GamePadLeftTrigger2,
+                    inversion: NotInverted,
+                    sensitivity: Sensitivity(5.0),
+                )),
+                SingleAxis(Analog(
+                    input: GamePadRightTrigger2,
+                    inversion: Inverted,
+                    sensitivity: Sensitivity(5.0),
+                )),
             ],
             "Blush": [
                 Continuous(Hold([Key(ShiftLeft)])),

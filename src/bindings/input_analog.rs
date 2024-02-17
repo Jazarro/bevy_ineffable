@@ -13,10 +13,8 @@ pub enum AnalogInput {
     ScrollWheelY,
 
     /// The amount of horizontal movement by the mouse since the last tick.
-    /// Could easily be in the high tens if the mouse is moved rapidly and the DPI settings are high.
     MouseMotionX,
     /// The amount of vertical movement by the mouse since the last tick.
-    /// Could easily be in the high tens if the mouse is moved rapidly and the DPI settings are high.
     MouseMotionY,
 
     /// Axis types specific to the GamePad.

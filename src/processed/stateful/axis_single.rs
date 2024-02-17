@@ -3,11 +3,12 @@ use std::ops::Not;
 use bevy::log::error;
 use bevy::prelude::Reflect;
 
-use crate::bindings::{InputBinding, PulseBinding, SingleAxisBinding};
+use crate::bindings::{InputBinding, Inversion, PulseBinding, Sensitivity, SingleAxisBinding};
 use crate::input_action::InputAction;
 use crate::phantom::{IAWrp, SingleAxis};
 use crate::processed::bound_action::BoundAction;
 use crate::processed::processor::Helper;
+use crate::processed::stateful::input_analog::StatefulAnalogInput;
 use crate::processed::stateful::input_binary::StatefulBinaryInput;
 use crate::processed::stateful::pulse::StatefulPulseBinding;
 use crate::processed::stateful::{input_binary, pulse};
@@ -27,8 +28,7 @@ pub(crate) struct StatefulSingleAxisBinding {
 pub(crate) enum StatefulSingleAxisBindingVariant {
     Dummy,
     /// Support for analog input devices is coming.
-    #[allow(dead_code)]
-    Analog(),
+    Analog(StatefulAnalogInput, Inversion, Sensitivity),
     Held {
         negative: StatefulBinaryInput,
         positive: StatefulBinaryInput,
@@ -62,7 +62,9 @@ pub(crate) fn collect<'a>(
 ) {
     match binding {
         SingleAxisBinding::Dummy => {}
-        SingleAxisBinding::Analog(_, _, _) => panic!("Not implemented."),
+        SingleAxisBinding::Analog { .. } => {
+            //todo
+        }
         SingleAxisBinding::Hold(neg, pos) => {
             out.push(meta, neg.clone());
             out.push(meta, pos.clone());
@@ -81,7 +83,9 @@ pub(crate) fn check_for_problems(
 ) {
     match axis {
         SingleAxisBinding::Dummy => (),
-        SingleAxisBinding::Analog(_, _, _) => panic!(),
+        SingleAxisBinding::Analog { .. } => {
+            //todo
+        }
         SingleAxisBinding::Hold(neg, pos) => {
             if neg.is_empty() && pos.is_empty() {
                 report.warning(InputConfigProblem::ConvolutedDummy {
@@ -118,9 +122,15 @@ impl StatefulSingleAxisBinding {
             })
             .map(|axis| match axis {
                 SingleAxisBinding::Dummy => StatefulSingleAxisBindingVariant::Dummy,
-                SingleAxisBinding::Analog(_, _, _) => {
-                    panic!();
-                }
+                SingleAxisBinding::Analog {
+                    input,
+                    inversion,
+                    sensitivity,
+                } => StatefulSingleAxisBindingVariant::Analog(
+                    StatefulAnalogInput::new(input),
+                    inversion.clone(),
+                    sensitivity.clone(),
+                ),
                 SingleAxisBinding::Hold(negative, positive) => {
                     StatefulSingleAxisBindingVariant::Held {
                         negative: StatefulBinaryInput::new(negative, helper),
@@ -148,13 +158,32 @@ impl StatefulSingleAxisBinding {
                 StatefulSingleAxisBindingVariant::Dummy => {
                     (min, max, toggle_neg, toggle_pos, newly_held)
                 }
-                StatefulSingleAxisBindingVariant::Analog() => panic!(),
+                StatefulSingleAxisBindingVariant::Analog(input, inversion, sensitivity) => {
+                    input.update(sources);
+                    let value =
+                        input.value_current * inversion.multiplier() * sensitivity.multiplier();
+                    (
+                        value.min(min),
+                        value.max(max),
+                        toggle_neg,
+                        toggle_pos,
+                        newly_held || input.just_activated(),
+                    )
+                }
                 StatefulSingleAxisBindingVariant::Held { negative, positive } => {
                     negative.update(sources);
                     positive.update(sources);
                     (
-                        if negative.is_active() { -1. } else { min },
-                        if positive.is_active() { 1. } else { max },
+                        if negative.is_active() {
+                            min.min(-1.)
+                        } else {
+                            min
+                        },
+                        if positive.is_active() {
+                            max.max(1.)
+                        } else {
+                            max
+                        },
                         toggle_neg,
                         toggle_pos,
                         newly_held || negative.just_pressed() || positive.just_pressed(),
