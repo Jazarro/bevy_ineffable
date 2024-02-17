@@ -60,8 +60,7 @@ fn load_keybindings_from_file() -> InputConfig {
     let path = PathBuf::new()
         .join("examples/assets")
         .join("cheat_code.ron");
-    let data = fs::read_to_string(&path).expect(&format!(
-        "Unable to read InputConfig file at path: {path:?}"
-    ));
+    let data = fs::read_to_string(&path)
+        .unwrap_or_else(|_| panic!("Unable to read InputConfig file at path: {path:?}"));
     ron::de::from_str::<InputConfig>(&data).expect("Unable to deserialise InputConfig")
 }

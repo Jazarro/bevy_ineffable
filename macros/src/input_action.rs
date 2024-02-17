@@ -137,6 +137,7 @@ pub(crate) mod kw {
     custom_keyword!(continuous);
 }
 
+#[allow(dead_code)]
 pub(crate) enum VariantAttribute {
     SingleAxis(kw::single_axis),
     DualAxis(kw::dual_axis),

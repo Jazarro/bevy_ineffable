@@ -75,7 +75,7 @@ pub fn init(
             texture: images.add(white_square()),
             ..default()
         })
-        .insert(Player::default());
+        .insert(Player);
     // Load keybindings and register them in the Ineffable Resource.
     // Without this step, no input can be read.
     ineffable.set_config(&create_config());
