@@ -5,6 +5,7 @@ use bevy::prelude::*;
 
 use crate::bindings::*;
 use crate::config::asset_loader_ron::InputConfigRonLoader;
+use crate::config::simple_asset_loading::{manage_loading, CurrentlyLoading};
 use crate::config::InputConfig;
 use crate::processed::stateful::axis_dual::StatefulDualAxisBinding;
 use crate::processed::stateful::axis_single::{
@@ -35,6 +36,10 @@ impl Plugin for IneffablePlugin {
             .add_systems(
                 PreUpdate,
                 ((read_gamepad_events, read_mouse_events), update_input).chain(),
+            )
+            .add_systems(
+                PreUpdate,
+                manage_loading.run_if(resource_exists::<CurrentlyLoading>),
             );
 
         // TODO: Hide behind optional Reflect feature?

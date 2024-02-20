@@ -16,10 +16,6 @@ fn main() {
         // Also register any InputAction enums you are using.
         .register_input_action::<Action>()
         .add_systems(Startup, init)
-        .add_systems(
-            Update,
-            print_on_load.run_if(resource_exists::<CurrentlyLoading>),
-        )
         .add_systems(Update, spell_casting)
         .run();
 }
@@ -37,39 +33,11 @@ pub enum Action {
     Attack,
 }
 
-#[derive(Debug, Resource)]
-struct CurrentlyLoading {
-    handle_base_profile: Handle<InputConfig>,
-    handle_custom_profile: Handle<InputConfig>,
-}
-
-fn init(mut commands: Commands, asset_server: Res<AssetServer>) {
-    commands.insert_resource(CurrentlyLoading {
-        handle_base_profile: asset_server.load("../examples/assets/profile_base.input.ron"),
-        handle_custom_profile: asset_server.load("../examples/assets/profile_custom.input.ron"),
-    });
-}
-
-fn print_on_load(
-    mut commands: Commands,
-    mut ineffable: IneffableCommands,
-    handles: Res<CurrentlyLoading>,
-    assets: Res<Assets<InputConfig>>,
-) {
-    // Unwrap the handles, early return if they are not loaded yet.
-    let Some(base_profile) = assets.get(&handles.handle_base_profile) else {
-        return;
-    };
-    let Some(custom_profile) = assets.get(&handles.handle_custom_profile) else {
-        return;
-    };
-    // Both assets are loaded, remove the CurrentlyLoading resource.
-    commands.remove_resource::<CurrentlyLoading>();
-
-    // Combine both input configs.
-    // Keybindings from the custom profile are used if available, otherwise those from the base profile are used.
-    let merged_profile = base_profile.merge(custom_profile);
-    ineffable.set_config(&merged_profile);
+fn init(mut ineffable: IneffableCommands) {
+    ineffable.load_configs(vec![
+        "../examples/assets/profile_base.input.ron",
+        "../examples/assets/profile_custom.input.ron", // Try commenting out this line!
+    ]);
 }
 
 fn spell_casting(bindings: Res<Ineffable>) {

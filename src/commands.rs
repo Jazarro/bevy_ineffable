@@ -1,8 +1,10 @@
 //! Contains the `SystemParam` that systems can use to set `InputConfig`s.
 
+use bevy::asset::{AssetPath, AssetServer};
 use bevy::ecs::system::SystemParam;
-use bevy::prelude::{Res, ResMut};
+use bevy::prelude::{Commands, Res, ResMut};
 
+use crate::config::simple_asset_loading::CurrentlyLoading;
 use crate::config::InputConfig;
 use crate::prelude::Ineffable;
 use crate::processed::bound_action::BoundAction;
@@ -30,16 +32,19 @@ use crate::resources::meta_data::IneffableMetaData;
 ///     commands.set_config_silent(&config);
 /// }
 /// ```
-#[derive(Debug, SystemParam)]
-pub struct IneffableCommands<'w> {
+#[allow(missing_debug_implementations)]
+#[derive(SystemParam)]
+pub struct IneffableCommands<'w, 's> {
+    commands: Commands<'w, 's>,
     /// Contains information about action groups and `InputAction`s, and which `InputKind`s they are.
     /// Used to validate the config.
     meta_data: Res<'w, IneffableMetaData>,
     processed_actions: ResMut<'w, Ineffable>,
     settings: ResMut<'w, IneffableSettings>,
+    asset_server: Res<'w, AssetServer>,
 }
 
-impl IneffableCommands<'_> {
+impl IneffableCommands<'_, '_> {
     /// Scan the given `InputConfig` and check for errors. Compiles and returns a report of all the problems it finds.
     ///
     /// This is most useful when loading and merging multiple configs. This function allows you to generate a report
@@ -89,5 +94,13 @@ impl IneffableCommands<'_> {
             })
             .collect();
         self.settings.set(config);
+    }
+
+    pub fn load_configs<'a>(&mut self, mut paths: Vec<impl Into<AssetPath<'a>>>) {
+        let handles = paths
+            .drain(..)
+            .map(|path| self.asset_server.load(path))
+            .collect();
+        self.commands.insert_resource(CurrentlyLoading { handles });
     }
 }

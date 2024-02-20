@@ -6,7 +6,6 @@ use bevy::prelude::*;
 use bevy::render::render_asset::RenderAssetUsages;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 
-use bevy_ineffable::bindings::AnalogInput;
 use bevy_ineffable::prelude::*;
 
 /// Player movement speed.
@@ -80,68 +79,7 @@ pub fn init(
         .insert(Player);
     // Load keybindings and register them in the Ineffable Resource.
     // Without this step, no input can be read.
-    ineffable.set_config(&create_config());
-}
-
-/// This function uses the builder to programmatically create the InputConfig.
-/// In a real game, you'd probably want to load the config as an asset from a ron file.
-#[must_use]
-fn create_config() -> InputConfig {
-    InputConfig::builder()
-        .bind(
-            ineff!(PlayerInput::Movement),
-            DualAxisBinding::builder()
-                .set_x(
-                    SingleAxisBinding::hold()
-                        .set_negative(KeyCode::KeyA)
-                        .set_positive(KeyCode::KeyD)
-                        .build(),
-                )
-                .set_y(
-                    SingleAxisBinding::hold()
-                        .set_negative(KeyCode::KeyS)
-                        .set_positive(KeyCode::KeyW)
-                        .build(),
-                )
-                .build(),
-        )
-        .bind(
-            ineff!(PlayerInput::Movement),
-            DualAxisBinding::builder()
-                .set_x(
-                    SingleAxisBinding::analog(AnalogInput::GamePad(GamepadAxisType::RightStickX))
-                        .set_sensitivity(5.)
-                        .build(),
-                )
-                .set_y(
-                    SingleAxisBinding::analog(AnalogInput::GamePad(GamepadAxisType::RightStickY))
-                        .set_sensitivity(5.)
-                        .build(),
-                )
-                .build(),
-        )
-        .bind(
-            ineff!(PlayerInput::Rotate),
-            SingleAxisBinding::hold()
-                .set_negative(KeyCode::ArrowLeft)
-                .set_positive(KeyCode::ArrowRight)
-                .build(),
-        )
-        .bind(
-            ineff!(PlayerInput::Rotate),
-            SingleAxisBinding::analog(AnalogInput::GamePad(GamepadAxisType::LeftStickX))
-                .set_sensitivity(10.)
-                .build(),
-        )
-        .bind(
-            ineff!(PlayerInput::Blush),
-            ContinuousBinding::hold(KeyCode::ShiftLeft),
-        )
-        .bind(
-            ineff!(PlayerInput::Teleport),
-            PulseBinding::just_pressed(KeyCode::Space),
-        )
-        .build()
+    ineffable.load_configs(vec!["../examples/assets/basics.input.ron"]);
 }
 
 // =====================================================================================================================
