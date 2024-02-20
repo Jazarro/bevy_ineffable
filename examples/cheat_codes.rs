@@ -1,9 +1,6 @@
 //! Demonstrates how to use Sequences to implement cheat codes.
 //! A sequence is a number of pulse inputs that must be activated in order.
 
-use std::fs;
-use std::path::PathBuf;
-
 use bevy::app::{Startup, Update};
 use bevy::prelude::*;
 
@@ -35,7 +32,7 @@ pub enum CheatCodes {
 pub fn init(mut ineffable: IneffableCommands) {
     // Load keybindings and register them in the Ineffable Resource.
     // Without this step, no input can be read.
-    ineffable.set_config(&load_keybindings_from_file());
+    ineffable.load_configs(vec!["../examples/assets/cheat_codes.input.ron"]);
 }
 
 /// Move the player. This is a DualAxis InputAction, which returns a Vec2.
@@ -47,20 +44,4 @@ fn listen_for_cheat_codes(bindings: Res<Ineffable>) {
     if bindings.just_pulsed(ineff!(CheatCodes::KonamiCode)) {
         println!("Something spectacular happens!");
     }
-}
-
-// =====================================================================================================================
-// ====== Only boring helper stuff below.
-// =====================================================================================================================
-
-/// Loads the keybinding config from file.
-/// In a real game, you'd probably want to load this as an asset or something.
-#[must_use]
-fn load_keybindings_from_file() -> InputConfig {
-    let path = PathBuf::new()
-        .join("examples/assets")
-        .join("cheat_code.ron");
-    let data = fs::read_to_string(&path)
-        .unwrap_or_else(|_| panic!("Unable to read InputConfig file at path: {path:?}"));
-    ron::de::from_str::<InputConfig>(&data).expect("Unable to deserialise InputConfig")
 }
