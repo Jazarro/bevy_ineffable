@@ -105,22 +105,13 @@ cargo run --example basics
 
 ## Roadmap
 
-- Macros
-- Multiple sets of bindings for the same group. This could be used, for example, to have different keybindings for
-  the same actions for different players.
-- Different binding contexts. This would allow bindings that might otherwise conflict with each other, because they
-  are used in different contexts.
-- Recording and playing back input. Could be used for:
-    - Macros
-    - Automated testing scenarios, such as tests that validate that a puzzle is still solvable or a jump is still
-      possible.
-    - Streaming input to a remote server.
-- Systems to help automatically create a new keybinding profile. Something that listens for key presses and creates
-  a new config based on what it detects.
-- Dynamic buttons prompts. Show what button the player must press on the screen, regardless of what keybindings the
-  player has set for themselves.
-- Tie-in to GUI?
-- Analog input
+- Macro support
+- Recording and playing back input sequences
+- Helper functions for implementing a key re-mapping settings screen in-game.
+- Full local multiplayer support
+- Support for on-screen button prompts
+- Different input contexts
+- Maybe a tie-in to GUI?
 
 ## License
 
