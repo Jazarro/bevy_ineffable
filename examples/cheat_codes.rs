@@ -3,6 +3,7 @@
 
 use bevy::app::{Startup, Update};
 use bevy::prelude::*;
+use bevy_ineffable::config::simple_asset_loading::MergeMode;
 
 use bevy_ineffable::prelude::*;
 
@@ -32,7 +33,7 @@ pub enum CheatCodes {
 pub fn init(mut ineffable: IneffableCommands) {
     // Load keybindings and register them in the Ineffable Resource.
     // Without this step, no input can be read.
-    ineffable.load_configs(vec!["../examples/assets/cheat_codes.input.ron"]);
+    ineffable.load_configs(vec![(MergeMode::Base, "cheat_codes.input.ron")]);
 }
 
 /// Move the player. This is a DualAxis InputAction, which returns a Vec2.

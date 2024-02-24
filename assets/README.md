@@ -1,0 +1,1 @@
+The assets in this directory are used by the examples in the `examples/` directory.

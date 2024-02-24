@@ -5,6 +5,7 @@ use bevy::app::{Startup, Update};
 use bevy::prelude::*;
 use bevy::render::render_asset::RenderAssetUsages;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
+use bevy_ineffable::config::simple_asset_loading::MergeMode;
 
 use bevy_ineffable::prelude::*;
 
@@ -79,7 +80,7 @@ pub fn init(
         .insert(Player);
     // Load keybindings and register them in the Ineffable Resource.
     // Without this step, no input can be read.
-    ineffable.load_configs(vec!["../examples/assets/basics.input.ron"]);
+    ineffable.load_configs(vec![(MergeMode::Base, "basics.input.ron")]);
 }
 
 // =====================================================================================================================

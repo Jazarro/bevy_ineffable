@@ -98,7 +98,27 @@ impl InputConfig {
     /// assert_eq!(merge123.post_acceptance_delay, Some(200));
     /// ```
     #[must_use]
+    pub fn merge_replace(&self, other: &InputConfig) -> Self {
+        self.merge_inner(other, false)
+    }
+
+    /// If the base and appending configs both define bindings for the same action, bindings are appended and all
+    /// bindings end up in the final result. This is in contrast to the merge_replace() function, that replaces
+    /// bindings in the base config, if the action is defined in the replace config.
+    #[must_use]
+    pub fn merge_append(&self, other: &InputConfig) -> Self {
+        self.merge_inner(other, true)
+    }
+
+    /// Deprecated, kept (for now) for backwards compatibility.
+    /// Replaced by merge_replace()
+    #[must_use]
     pub fn merge(&self, other: &InputConfig) -> Self {
+        self.merge_replace(other)
+    }
+
+    #[must_use]
+    fn merge_inner(&self, other: &InputConfig, append: bool) -> Self {
         let mut value = self.clone();
         for (group_id, action_id, action) in other.bindings.iter().flat_map(|(group_id, group)| {
             group
@@ -107,7 +127,9 @@ impl InputConfig {
         }) {
             let actions = value.bindings.entry(group_id.clone()).or_default();
             let bindings = actions.entry(action_id.clone()).or_default();
-            bindings.clear();
+            if !append {
+                bindings.clear();
+            }
             bindings.append(&mut action.clone());
         }
         if other.post_acceptance_delay.is_some() {

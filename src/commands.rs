@@ -4,7 +4,7 @@ use bevy::asset::{AssetPath, AssetServer};
 use bevy::ecs::system::SystemParam;
 use bevy::prelude::{Commands, Res, ResMut};
 
-use crate::config::simple_asset_loading::CurrentlyLoading;
+use crate::config::simple_asset_loading::{CurrentlyLoading, MergeMode};
 use crate::config::InputConfig;
 use crate::prelude::Ineffable;
 use crate::processed::bound_action::BoundAction;
@@ -95,11 +95,10 @@ impl IneffableCommands<'_, '_> {
             .collect();
         self.settings.set(config);
     }
-
-    pub fn load_configs<'a>(&mut self, mut paths: Vec<impl Into<AssetPath<'a>>>) {
+    pub fn load_configs<'a>(&mut self, mut paths: Vec<(MergeMode, impl Into<AssetPath<'a>>)>) {
         let handles = paths
             .drain(..)
-            .map(|path| self.asset_server.load(path))
+            .map(|(merge_mode, path)| (merge_mode, self.asset_server.load(path)))
             .collect();
         self.commands.insert_resource(CurrentlyLoading { handles });
     }

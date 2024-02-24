@@ -35,11 +35,12 @@ impl Plugin for IneffablePlugin {
             .init_asset_loader::<InputConfigRonLoader>()
             .add_systems(
                 PreUpdate,
-                ((read_gamepad_events, read_mouse_events), update_input).chain(),
-            )
-            .add_systems(
-                PreUpdate,
-                manage_loading.run_if(resource_exists::<CurrentlyLoading>),
+                (
+                    manage_loading.run_if(resource_exists::<CurrentlyLoading>),
+                    (read_gamepad_events, read_mouse_events),
+                    update_input,
+                )
+                    .chain(),
             );
 
         // TODO: Hide behind optional Reflect feature?

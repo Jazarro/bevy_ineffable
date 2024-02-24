@@ -5,6 +5,7 @@
 
 use bevy::app::{Startup, Update};
 use bevy::prelude::*;
+use bevy_ineffable::config::simple_asset_loading::MergeMode;
 
 use bevy_ineffable::prelude::*;
 
@@ -35,8 +36,8 @@ pub enum Action {
 
 fn init(mut ineffable: IneffableCommands) {
     ineffable.load_configs(vec![
-        "../examples/assets/profile_base.input.ron",
-        "../examples/assets/profile_custom.input.ron", // Try commenting out this line!
+        (MergeMode::Base, "profile_base.input.ron"),
+        (MergeMode::Replace, "profile_custom.input.ron"),
     ]);
 }
 

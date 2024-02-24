@@ -7,7 +7,8 @@
 //! altogether), you are free to handle loading yourself and call `IneffableCommands.set_config()` directly.
 
 use bevy::asset::{AssetServer, Assets, Handle, LoadState};
-use bevy::prelude::{Commands, Res, Resource};
+use bevy::prelude::{Commands, Reflect, Res, Resource};
+use serde::{Deserialize, Serialize};
 
 use crate::commands::IneffableCommands;
 use crate::config::InputConfig;
@@ -16,7 +17,7 @@ use crate::config::InputConfig;
 pub struct CurrentlyLoading {
     /// Ordered collection of handles.
     /// The first handle is for the base config, others are to be merged into the base in order.
-    pub handles: Vec<Handle<InputConfig>>,
+    pub handles: Vec<(MergeMode, Handle<InputConfig>)>,
 }
 
 /// This system runs every tick as long as the CurrentlyLoading resource exists.
@@ -28,7 +29,7 @@ pub(crate) fn manage_loading(
     assets: Res<'_, Assets<InputConfig>>,
     asset_server: Res<'_, AssetServer>,
 ) {
-    let all_done = handles.handles.iter().all(|handle| {
+    let all_done = handles.handles.iter().all(|(_, handle)| {
         matches!(
             asset_server.load_state(handle),
             LoadState::Loaded | LoadState::Failed
@@ -45,7 +46,31 @@ pub(crate) fn manage_loading(
     let merged_config = handles
         .handles
         .iter()
-        .filter_map(|handle| assets.get(handle))
-        .fold(InputConfig::default(), |acc, next| acc.merge(next));
+        .filter_map(|(merge_mode, handle)| assets.get(handle).map(|asset| (merge_mode, asset)))
+        .fold(
+            InputConfig::default(),
+            |acc, (merge_mode, next)| match merge_mode {
+                MergeMode::Base => next.clone(),
+                MergeMode::Append => acc.merge_append(next),
+                MergeMode::Replace => acc.merge_replace(next),
+            },
+        );
     ineffable.set_config(&merged_config);
+}
+
+/// Determines how two `InputConfig`s are merged together.
+#[derive(Debug, Default, Serialize, Deserialize, Reflect, Clone, PartialEq, Eq, Hash)]
+pub enum MergeMode {
+    /// Discard everything, use the base config as the new starting point.
+    Base,
+    /// If the appending config contains a mapping for an action, all keybindings from that mapping are appended to
+    /// the bindings defined in the base config.
+    Append,
+    /// If the replacing config contains a mapping for an action, those bindings are used instead of those in the
+    /// base config. This means that if the replacing config maps to an empty array, then the action is unbound.
+    ///
+    /// This should be used in most cases. As a player, when I'm remapping my keys, I usually don't want bindings from
+    /// the base config to also still be active. If I do want that, I can always just copy those bindings.
+    #[default]
+    Replace,
 }
