@@ -20,6 +20,7 @@ pub mod input_action;
 pub mod phantom;
 pub mod plugin;
 pub mod processed;
+pub mod records;
 pub mod register;
 pub mod reporting;
 pub mod resources;

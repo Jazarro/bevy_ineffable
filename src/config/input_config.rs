@@ -7,6 +7,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::bindings::InputBinding;
 use crate::config::builder::InputConfigBuilder;
+use crate::records::frame::InputMacro;
 
 /// Contains input settings and keybindings for the game.
 ///
@@ -23,8 +24,8 @@ pub struct InputConfig {
     pub post_acceptance_delay: Option<DurationInMillis>,
     #[serde(default)]
     pub bindings: HashMap<String, HashMap<String, Vec<InputBinding>>>,
-    // #[serde(default)]
-    // pub macros: Vec<Macro>,
+    #[serde(default)]
+    pub macros: Vec<InputMacro>,
 }
 
 /// A simply type alias to make it clear what this integer represents; a duration in milliseconds.
@@ -115,6 +116,9 @@ impl InputConfig {
         }
         if other.double_click_timing.is_some() {
             value.double_click_timing = other.double_click_timing;
+        }
+        if !other.macros.is_empty() {
+            value.macros = other.macros.clone();
         }
         value
     }

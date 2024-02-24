@@ -16,7 +16,7 @@ use crate::processed::stateful::continuous::{
 };
 use crate::processed::stateful::input_binary::StatefulBinaryInput;
 use crate::processed::stateful::pulse::{StatefulPulseBinding, StatefulPulseBindingVariant};
-use crate::processed::updating::update_input;
+use crate::processed::updating::{update_input, update_playback};
 use crate::resources::ineffable_settings::IneffableSettings;
 use crate::resources::meta_data::IneffableMetaData;
 use crate::resources::sources::IneffableEventSources;
@@ -35,11 +35,13 @@ impl Plugin for IneffablePlugin {
             .init_asset_loader::<InputConfigRonLoader>()
             .add_systems(
                 PreUpdate,
-                ((read_gamepad_events, read_mouse_events), update_input).chain(),
-            )
-            .add_systems(
-                PreUpdate,
-                manage_loading.run_if(resource_exists::<CurrentlyLoading>),
+                (
+                    manage_loading.run_if(resource_exists::<CurrentlyLoading>),
+                    (read_gamepad_events, read_mouse_events),
+                    update_playback,
+                    update_input,
+                )
+                    .chain(),
             );
 
         // TODO: Hide behind optional Reflect feature?

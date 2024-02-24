@@ -1,0 +1,16 @@
+InputConfig(
+    macros: [
+        (
+            name: "Blush for one second",
+            trigger: JustPressed([Key(Digit1)]),
+            recording: {
+                0: [
+                    ("PlayerInput::Blush", Continuous(Start))
+                ],
+                1000: [
+                    ("PlayerInput::Blush", Continuous(End))
+                ],
+            },
+        )
+    ],
+)

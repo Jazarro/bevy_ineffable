@@ -1,6 +1,6 @@
 use std::time::Duration;
 
-use bevy::utils::HashMap;
+use bevy::utils::{default, HashMap};
 use serde::{Deserialize, Serialize};
 
 use crate::bindings::InputBinding;
@@ -95,6 +95,7 @@ impl InputConfigBuilder {
             bindings: self.bindings.clone(),
             double_click_timing: self.double_click_timing,
             post_acceptance_delay: self.post_acceptance_delay,
+            ..default() // TODO: fix this.
         }
     }
 }
