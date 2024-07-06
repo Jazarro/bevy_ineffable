@@ -32,7 +32,7 @@ pub(crate) fn manage_loading(
     let all_done = handles.handles.iter().all(|(_, handle)| {
         matches!(
             asset_server.load_state(handle),
-            LoadState::Loaded | LoadState::Failed
+            LoadState::Loaded | LoadState::Failed(_)
         )
     });
     if !all_done {

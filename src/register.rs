@@ -25,11 +25,12 @@ impl InputActionRegistrar for App {
     /// App::new().register_input_action::<ExampleInput>();
     /// ```
     fn register_input_action<I: InputAction>(&mut self) -> &mut Self {
-        if !self.world.contains_resource::<IneffableMetaData>() {
-            self.world.insert_resource(IneffableMetaData::default());
+        if !self.world_mut().contains_resource::<IneffableMetaData>() {
+            self.world_mut()
+                .insert_resource(IneffableMetaData::default());
         }
         let mut resource = self
-            .world
+            .world_mut()
             .get_resource_mut::<IneffableMetaData>()
             .expect("Missing resource IneffableMetaData. Try adding the IneffablePlugin first.");
         if let Some(previously_registered_group) = resource.group(I::group_id()) {

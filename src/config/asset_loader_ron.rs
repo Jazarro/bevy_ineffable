@@ -2,7 +2,7 @@ use std::fmt::{Display, Formatter};
 use std::io::Error;
 
 use bevy::asset::io::Reader;
-use bevy::asset::{AssetLoader, AsyncReadExt, BoxedFuture, LoadContext};
+use bevy::asset::{AssetLoader, AsyncReadExt, LoadContext};
 use ron::de::SpannedError;
 
 use crate::config::input_config::InputConfig;
@@ -14,18 +14,16 @@ impl AssetLoader for InputConfigRonLoader {
     type Asset = InputConfig;
     type Settings = ();
     type Error = CustomAssetLoaderError;
-    fn load<'a>(
+    async fn load<'a>(
         &'a self,
         reader: &'a mut Reader<'_>,
         _settings: &'a (),
         _load_context: &'a mut LoadContext<'_>,
-    ) -> BoxedFuture<'a, Result<Self::Asset, Self::Error>> {
-        Box::pin(async move {
-            let mut bytes = Vec::new();
-            reader.read_to_end(&mut bytes).await?;
-            let custom_asset = ron::de::from_bytes::<InputConfig>(&bytes)?;
-            Ok(custom_asset)
-        })
+    ) -> Result<Self::Asset, Self::Error> {
+        let mut bytes = Vec::new();
+        reader.read_to_end(&mut bytes).await?;
+        let custom_asset = ron::de::from_bytes::<InputConfig>(&bytes)?;
+        Ok(custom_asset)
     }
 
     fn extensions(&self) -> &[&str] {
