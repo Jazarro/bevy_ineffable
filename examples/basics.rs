@@ -122,10 +122,10 @@ fn player_blushing(bindings: Res<Ineffable>, mut query: Query<&mut Sprite, With<
 
     sprite.color = if bindings.is_active(ineff!(PlayerInput::Blush)) {
         // When blushing, return a reddish tint.
-        Color::rgb(0.8, 0.4, 0.4)
+        Color::srgb(0.8, 0.4, 0.4)
     } else {
         // When not blushing, return a blue/greenish tint.
-        Color::rgb(0.4, 0.8, 0.8)
+        Color::srgb(0.4, 0.8, 0.8)
     };
 }
 
