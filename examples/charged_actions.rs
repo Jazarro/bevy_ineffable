@@ -58,10 +58,10 @@ pub fn init(
     mut ineffable: IneffableCommands,
     mut images: ResMut<Assets<Image>>,
 ) {
-    commands.spawn(Camera2dBundle::default());
+    commands.spawn(Camera2d);
     commands
-        .spawn(SpriteBundle {
-            texture: images.add(make_square()),
+        .spawn(Sprite {
+            image: images.add(make_square()),
             ..default()
         })
         .insert(Player::default());

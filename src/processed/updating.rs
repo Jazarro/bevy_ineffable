@@ -1,26 +1,24 @@
 use bevy::ecs::system::SystemParam;
+use bevy::input::mouse::{AccumulatedMouseMotion, AccumulatedMouseScroll};
 use bevy::log::{error, info, warn};
 use bevy::prelude::*;
 
 use crate::resources::ineffable_settings::IneffableSettings;
-use crate::resources::sources::IneffableEventSources;
 use crate::resources::Ineffable;
 
 #[derive(SystemParam)]
-pub(crate) struct InputSources<'w> {
+pub(crate) struct InputSources<'w, 's> {
     pub(crate) settings: ResMut<'w, IneffableSettings>,
     pub(crate) time: Res<'w, Time>,
-    pub(crate) from_events: Res<'w, IneffableEventSources>,
-    pub(crate) gamepads: Res<'w, Gamepads>,
+    pub(crate) mouse_motion: Res<'w, AccumulatedMouseMotion>,
+    pub(crate) mouse_scroll: Res<'w, AccumulatedMouseScroll>,
+    pub(crate) gamepads: Query<'w, 's, (Entity, &'static Gamepad)>,
     pub(crate) input_keycodes: Res<'w, ButtonInput<KeyCode>>,
     pub(crate) input_mouse_btn: Res<'w, ButtonInput<MouseButton>>,
-    pub(crate) input_gamepad_btn: Res<'w, ButtonInput<GamepadButton>>,
-    pub(crate) axis_gamepad_btn: Res<'w, Axis<GamepadButton>>,
-    pub(crate) axis_gamepad_axis: Res<'w, Axis<GamepadAxis>>,
 }
 
 #[allow(clippy::needless_pass_by_value)] // That's just a bevy thing.
-pub(crate) fn update_input(mut bindings: ResMut<'_, Ineffable>, mut sources: InputSources<'_>) {
+pub(crate) fn update_input(mut bindings: ResMut<'_, Ineffable>, mut sources: InputSources<'_, '_>) {
     bindings
         .groups
         .iter_mut()
@@ -34,7 +32,7 @@ pub(crate) fn update_input(mut bindings: ResMut<'_, Ineffable>, mut sources: Inp
 }
 
 // TODO: Remove.
-pub(crate) fn _peek_at_input(sources: InputSources<'_>) {
+pub(crate) fn _peek_at_input(sources: InputSources<'_, '_>) {
     for btn in sources.input_mouse_btn.get_just_pressed() {
         warn!("JustPressed: {:?}", btn);
     }

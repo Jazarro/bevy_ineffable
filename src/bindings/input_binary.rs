@@ -1,6 +1,6 @@
 use std::slice::Iter;
 
-use bevy::prelude::{GamepadButtonType, KeyCode, MouseButton, Reflect};
+use bevy::prelude::{GamepadButton, KeyCode, MouseButton, Reflect};
 use serde::{Deserialize, Serialize};
 
 use crate::bindings::input_analog::AnalogInput;
@@ -17,7 +17,7 @@ pub enum BinaryInput {
     Key(KeyCode),
     KeyGroup(KeyGroup),
     MouseButton(MouseButton),
-    Gamepad(GamepadButtonType),
+    Gamepad(GamepadButton),
     /// A binary input taken from an analog axis.
     /// If the axis passes a given threshold, it is considered active, otherwise it is not.
     /// For example; pushing a game pad's left trigger to the left counting as a button press.
@@ -178,8 +178,8 @@ impl From<MouseButton> for BinaryInput {
     }
 }
 
-impl From<GamepadButtonType> for BinaryInput {
-    fn from(input: GamepadButtonType) -> Self {
+impl From<GamepadButton> for BinaryInput {
+    fn from(input: GamepadButton) -> Self {
         BinaryInput::Gamepad(input)
     }
 }

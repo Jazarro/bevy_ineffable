@@ -125,7 +125,7 @@ impl StatefulContinuousBinding {
             ..default()
         }
     }
-    pub(crate) fn update(&mut self, sources: &mut InputSources<'_>) {
+    pub(crate) fn update(&mut self, sources: &mut InputSources<'_, '_>) {
         self.active_previous_tick = self.active;
         let (held, just_pressed, toggle) = self.bindings.iter_mut().fold(
             (false, false, false),

@@ -71,10 +71,10 @@ pub fn init(
     mut ineffable: IneffableCommands,
     mut images: ResMut<Assets<Image>>,
 ) {
-    commands.spawn(Camera2dBundle::default());
+    commands.spawn(Camera2d);
     commands
-        .spawn(SpriteBundle {
-            texture: images.add(white_square()),
+        .spawn(Sprite {
+            image: images.add(white_square()),
             ..default()
         })
         .insert(Player);
@@ -98,8 +98,8 @@ fn player_movement(
     let mut transform = query.single_mut();
 
     let movement_direction = bindings.direction_2d(ineff!(PlayerInput::Movement));
-    transform.translation.x += movement_direction.x * time.delta_seconds() * SPEED;
-    transform.translation.y += movement_direction.y * time.delta_seconds() * SPEED;
+    transform.translation.x += movement_direction.x * time.delta_secs() * SPEED;
+    transform.translation.y += movement_direction.y * time.delta_secs() * SPEED;
 }
 
 /// Rotate the player. This is a SingleAxis InputAction, which returns an f32 between -1.0 and 1.0.
@@ -112,7 +112,7 @@ fn player_rotation(
     let mut transform = query.single_mut();
 
     let rotate_direction = bindings.direction_1d(ineff!(PlayerInput::Rotate));
-    transform.rotate_z(rotate_direction * time.delta_seconds() * ROTATE_SPEED);
+    transform.rotate_z(rotate_direction * time.delta_secs() * ROTATE_SPEED);
 }
 
 /// Decide what colour tint the player should have, based on whether they are currently holding down the blush button.

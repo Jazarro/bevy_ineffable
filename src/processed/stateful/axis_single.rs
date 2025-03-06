@@ -151,7 +151,7 @@ impl StatefulSingleAxisBinding {
             toggled_direction: Direction1D::Neutral,
         }
     }
-    pub(crate) fn update(&mut self, sources: &mut InputSources<'_>) {
+    pub(crate) fn update(&mut self, sources: &mut InputSources<'_, '_>) {
         let (min, max, toggle_neg, toggle_pos, newly_held) = self.bindings.iter_mut().fold(
             (0., 0., false, false, false),
             |(min, max, toggle_neg, toggle_pos, newly_held), binding| match binding {

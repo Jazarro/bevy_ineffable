@@ -54,7 +54,7 @@ impl StatefulDualAxisBinding {
             value: Vec2::default(),
         }
     }
-    pub(crate) fn update(&mut self, sources: &mut InputSources<'_>) {
+    pub(crate) fn update(&mut self, sources: &mut InputSources<'_, '_>) {
         self.x.update(sources);
         self.y.update(sources);
         self.value = Vec2::new(self.x.value, self.y.value);

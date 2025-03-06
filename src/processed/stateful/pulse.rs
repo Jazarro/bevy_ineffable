@@ -173,7 +173,7 @@ impl StatefulPulseBinding {
         }
     }
 
-    pub(crate) fn update(&mut self, sources: &mut InputSources<'_>) {
+    pub(crate) fn update(&mut self, sources: &mut InputSources<'_, '_>) {
         self.just_pulsed =
             self.bindings
                 .iter_mut()

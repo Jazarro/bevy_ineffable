@@ -2,7 +2,7 @@ use std::fmt::{Display, Formatter};
 use std::io::Error;
 
 use bevy::asset::io::Reader;
-use bevy::asset::{AssetLoader, AsyncReadExt, LoadContext};
+use bevy::asset::{AssetLoader, LoadContext};
 use ron::de::SpannedError;
 
 use crate::config::input_config::InputConfig;
@@ -14,11 +14,11 @@ impl AssetLoader for InputConfigRonLoader {
     type Asset = InputConfig;
     type Settings = ();
     type Error = CustomAssetLoaderError;
-    async fn load<'a>(
-        &'a self,
-        reader: &'a mut Reader<'_>,
-        _settings: &'a (),
-        _load_context: &'a mut LoadContext<'_>,
+    async fn load(
+        &self,
+        reader: &mut dyn Reader,
+        _settings: &(),
+        _load_context: &mut LoadContext<'_>,
     ) -> Result<Self::Asset, Self::Error> {
         let mut bytes = Vec::new();
         reader.read_to_end(&mut bytes).await?;

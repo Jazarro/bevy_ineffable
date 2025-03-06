@@ -1,4 +1,4 @@
-use bevy::prelude::{GamepadButton, Reflect};
+use bevy::prelude::Reflect;
 
 use crate::bindings::{BinaryInput, Chord};
 use crate::processed::processor::Helper;
@@ -81,7 +81,7 @@ impl StatefulBinaryInput {
     pub(crate) fn just_released(&self) -> bool {
         !self.blocked && !self.active && self.active_previous_tick
     }
-    pub(crate) fn update(&mut self, sources: &mut InputSources<'_>) {
+    pub(crate) fn update(&mut self, sources: &mut InputSources<'_, '_>) {
         self.active_previous_tick = self.active;
 
         // If the post-acceptance-delay is active, then do nothing. We should ignore all user input.
@@ -102,7 +102,7 @@ impl StatefulBinaryInput {
             }
         }
     }
-    fn is_chord_pressed(chord: &ProcessedChord, sources: &InputSources<'_>) -> bool {
+    fn is_chord_pressed(chord: &ProcessedChord, sources: &InputSources<'_, '_>) -> bool {
         match chord {
             ProcessedChord::Dummy => false,
             ProcessedChord::Single(input) => Self::is_pressed(input, sources),
@@ -111,7 +111,7 @@ impl StatefulBinaryInput {
             }
         }
     }
-    fn is_pressed(input: &BinaryInput, sources: &InputSources<'_>) -> bool {
+    fn is_pressed(input: &BinaryInput, sources: &InputSources<'_, '_>) -> bool {
         match input {
             BinaryInput::Key(key_code) => sources.input_keycodes.pressed(*key_code),
             BinaryInput::KeyGroup(group) => group
@@ -121,11 +121,10 @@ impl StatefulBinaryInput {
             BinaryInput::Gamepad(btn) => {
                 // For now, we don't support local multiplayer. (Will change in the future)
                 // We'll check if the button is active on *any* connected gamepad.
-                sources.gamepads.iter().any(|gamepad| {
-                    sources
-                        .input_gamepad_btn
-                        .pressed(GamepadButton::new(gamepad, *btn))
-                })
+                sources
+                    .gamepads
+                    .iter()
+                    .any(|(_, gamepad)| gamepad.pressed(*btn))
             }
             BinaryInput::Axis(input, threshold) => {
                 let value = StatefulAnalogInput::calc_value(input, sources);

@@ -40,7 +40,7 @@ impl BoundAction {
         }
     }
 
-    pub(crate) fn update(&mut self, sources: &mut InputSources<'_>) {
+    pub(crate) fn update(&mut self, sources: &mut InputSources<'_, '_>) {
         match self {
             BoundAction::SingleAxis(binding) => binding.update(sources),
             BoundAction::DualAxis(binding) => binding.update(sources),

@@ -1,4 +1,4 @@
-use bevy::prelude::{GamepadAxisType, Reflect};
+use bevy::prelude::{GamepadAxis, Reflect};
 use serde::{Deserialize, Serialize};
 
 use crate::bindings::{BinaryInput, Threshold};
@@ -18,13 +18,13 @@ pub enum AnalogInput {
     MouseMotionY,
 
     /// Axis types specific to the GamePad.
-    GamePad(GamepadAxisType),
+    GamePad(GamepadAxis),
     /// The amount by which the bottom-left trigger is pushed in. Is a value between zero and one.
-    /// This button is also present in the `GamepadButtonType`-enum, where it acts as a binary input that activates
+    /// This button is also present in the `GamepadButton`-enum, where it acts as a binary input that activates
     /// when the trigger is pushed 75% of the way in.
     GamePadLeftTrigger2,
     /// The amount by which the bottom-right trigger is pushed in. Is a value between zero and one.
-    /// This button is also present in the `GamepadButtonType`-enum, where it acts as a binary input that activates
+    /// This button is also present in the `GamepadButton`-enum, where it acts as a binary input that activates
     /// when the trigger is pushed 75% of the way in.
     GamePadRightTrigger2,
 }

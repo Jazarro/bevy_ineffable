@@ -8,11 +8,11 @@ InputConfig(
                 ),
                 DualAxis(
                     x: Analog(
-                        input: GamePad(RightStickX),
+                        input: GamePad(LeftStickX),
                         sensitivity: Sensitivity(5.0),
                     ),
                     y: Analog(
-                        input: GamePad(RightStickY),
+                        input: GamePad(LeftStickY),
                         sensitivity: Sensitivity(5.0),
                     ),
                 ),
@@ -32,9 +32,11 @@ InputConfig(
             ],
             "Blush": [
                 Continuous(Hold([Key(ShiftLeft)])),
+                Continuous(Hold([Gamepad(South)])),
             ],
             "Teleport": [
                 Pulse(JustPressed([Key(Space)])),
+                Pulse(JustPressed([Gamepad(North)])),
             ],
         },
     },
