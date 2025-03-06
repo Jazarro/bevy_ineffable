@@ -1,6 +1,6 @@
 [package]
 name = "bevy_ineffable"
-version = "0.6.0"
+version = "0.7.0"
 authors = ["Jazarro"]
 edition = "2021"
 description = "A simple-to-use input manager for bevy that empowers players and makes accessibility easy."
@@ -25,9 +25,9 @@ members = [".", "macros"]
 
 [dependencies]
 
-bevy_ineffable_macros = { version = "=0.6.0", path = "macros" }
+bevy_ineffable_macros = { version = "=0.7.0", path = "macros" }
 
-serde = { version = "1.0.196", features = ["derive"] }
+serde = { version = "1.0.218", features = ["derive"] }
 ron = "0.8.1"
 
 bevy = { version = "0.15.3", default-features = false, features = [
